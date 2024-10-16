@@ -1,0 +1,5 @@
+#!/bin/bash
+
+disksize=$(duf -only local -output size,used,avail | awk 'FNR==6{ print $4"/"$2 " " "("$6")" }')
+
+echo ^b#e06a6a^^c#1a1b26^" 󰋊 "^d^^c#e06a6a^ $disksize^d^

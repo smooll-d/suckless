@@ -1,0 +1,54 @@
+#!/bin/bash
+
+_battery=$(cat /sys/class/power_supply/BAT0/capacity | awk '{ print int($0) }')
+
+battery0=$(cat /sys/class/power_supply/BAT0/capacity | awk '{ print $0"% " }')
+battery1=$(cat /sys/class/power_supply/BAT0/capacity | awk '{ print $0"% " }')
+battery2=$(cat /sys/class/power_supply/BAT0/capacity | awk '{ print $0"% " }')
+battery3=$(cat /sys/class/power_supply/BAT0/capacity | awk '{ print $0"% " }')
+battery4=$(cat /sys/class/power_supply/BAT0/capacity | awk '{ print $0"% " }')
+battery5=$(cat /sys/class/power_supply/BAT0/capacity | awk '{ print $0"% " }')
+battery6=$(cat /sys/class/power_supply/BAT0/capacity | awk '{ print $0"% " }')
+battery7=$(cat /sys/class/power_supply/BAT0/capacity | awk '{ print $0"% " }')
+battery8=$(cat /sys/class/power_supply/BAT0/capacity | awk '{ print $0"% " }')
+battery9=$(cat /sys/class/power_supply/BAT0/capacity | awk '{ print $0"% " }')
+battery10=$(cat /sys/class/power_supply/BAT0/capacity | awk '{ print $0"% " }')
+battery11=$(cat /sys/class/power_supply/BAT0/capacity | awk '{ print $0"% " }')
+
+if [ $_battery -eq 100 ]
+then
+    echo ^b#c66ae0^^c#1a1b26^" 󰁹 "^d^^c#c66ae0^ $battery11^d^
+elif [ $_battery -gt 90 ] && [ $_battery -lt 100 ] || [ $_battery -eq 90 ]
+then
+    echo ^b#c66ae0^^c#1a1b26^" 󰂂 "^d^^c#c66ae0^ $battery10^d^
+elif [ $_battery -gt 80 ] && [ $_battery -lt 90 ] || [ $_battery -eq 80 ]
+then
+    echo ^b#c66ae0^^c#1a1b26^" 󰂁 "^d^^c#c66ae0^ $battery9^d^
+elif [ $_battery -gt 70 ] && [ $_battery -lt 80 ] || [ $_battery -eq 70 ]
+then
+    echo ^b#c66ae0^^c#1a1b26^" 󰂀 "^d^^c#c66ae0^ $battery8^d^
+elif [ $_battery -gt 60 ] && [ $_battery -lt 70 ] || [ $_battery -eq 60 ]
+then
+    echo ^b#c66ae0^^c#1a1b26^" 󰁿 "^d^^c#c66ae0^ $battery7^d^
+elif [ $_battery -gt 50 ] && [ $_battery -lt 60 ] || [ $_battery -eq 50 ]
+then
+    echo ^b#c66ae0^^c#1a1b26^" 󰁾 "^d^^c#c66ae0^ $battery6^d^
+elif [ $_battery -gt 40 ] && [ $_battery -lt 50 ] || [ $_battery -eq 40 ]
+then
+    echo ^b#c66ae0^^c#1a1b26^" 󰁽 "^d^^c#c66ae0^ $battery5^d^
+elif [ $_battery -gt 30 ] && [ $_battery -lt 40 ] || [ $_battery -eq 30 ]
+then
+    echo ^b#c66ae0^^c#1a1b26^" 󰁼 "^d^^c#c66ae0^ $battery4^d^
+elif [ $_battery -gt 20 ] && [ $_battery -lt 30 ] || [ $_battery -eq 20 ]
+then
+    echo ^b#c66ae0^^c#1a1b26^" 󰁻 "^d^^c#c66ae0^ $battery3^d^
+elif [ $_battery -gt 10 ] && [ $_battery -lt 20 ] || [ $_battery -eq 10 ]
+then
+    echo ^b#c66ae0^^c#1a1b26^" 󰁺 "^d^^c#c66ae0^ $battery2^d^
+elif [ $_battery -gt 0 ] && [ $_battery -lt 10 ]
+then
+    echo ^b#c66ae0^^c#1a1b26^" 󰂎 "^d^^c#c66ae0^ $battery1^d^
+elif [ $_battery -eq 0 ]
+then
+    echo ^b#c66ae0^^c#1a1b26^" 󱉞 "^d^^c#c66ae0^ $battery0^d^
+fi
