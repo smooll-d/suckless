@@ -39,8 +39,8 @@ I'm not going to show you how to make dwm run on login or anything like that, yo
 ### Patches
 Here's a list of patches that reside in the `patches/` directory and an excerpt from dwm's patches website describing what they do (I don't remember if all of them are applied):
 
->[!TIP]
-> the status2d and systray patches are combined into one file to fix positioning of the bar and systray.
+>[!NOTE]
+> `status2d` and `systray` patches are combined into one to fix positioning of the bar and systray.
 
 - actualfullscreen - Actually toggle fullscreen for a window, instead of toggling the status bar and the monocle layout.
 - adjecenttag - This patch allow to focus on the adjacent tag (left or right) or move a client to it, the version with 'skipvacant' will skip vacant tags
