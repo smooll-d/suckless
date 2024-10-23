@@ -59,21 +59,17 @@ static const char *const autostart[] = {
 	"lxsession", "-s", "/usr/share/xsession/dwm.desktop", NULL,
 	"dwmblocks", NULL,
 	"nitrogen", "--restore", NULL,
-	"ibus-daemon", "-drxRn", "dwm", NULL,
 	"wired", NULL,
 	"systemctl", "--user", "import-environment", "DISPLAY", NULL,
 	"parcellite", NULL,
 	"redshift", "-l", "54.00696:15.98751", "-t", "6500:3500", NULL,
-	//"xbindkeys", "-f", ".xbindkeysrc", NULL,
 	"nm-applet", NULL,
 	"blueman-applet", NULL,
 	"volctl", NULL,
 	"polychromatic-tray-applet", NULL,
-	"kitty", NULL,
-	"discord", NULL,
-	"caprine", NULL,
-	"otd-daemon", NULL,
-	//"python3", "/home/smoolldev/SmoollDev/Development/Python/OpenRazer/multicolor.py", NULL,
+	//"discord", NULL,
+	"st", NULL,
+	//"caprine", NULL,
 	NULL /* terminate */
 };
 
@@ -132,7 +128,8 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] 	= { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", foreground, "-nf", background, "-sb", border, "-sf", black, NULL };
-static const char *termcmd[]  	= { "kitty", NULL };
+//static const char *termcmd[]  	= { "tabbed", "-c", "-d", "-r", "2", "st", "-w", "''", NULL };
+static const char *termcmd[] 	= { "st", NULL };
 //static const char *clipmenu[]     = { "clipmenu", NULL };
 static const char *pcmanfm[] 	= { "pcmanfm", NULL };
 static const char *rofi[] 	    = { "rofi", "-show", "drun", "-theme", "~/.config/rofi/config.rasi", NULL };
