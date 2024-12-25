@@ -1046,7 +1046,9 @@ drawbar(Monitor *m)
 		if (c->isurgent)
 			urg |= c->tags;
 	}
+
 	x = 0;
+
 	for (i = 0; i < LENGTH(tags); i++) {
 		w = TEXTW(tags[i]);
 		//drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
@@ -1060,6 +1062,7 @@ drawbar(Monitor *m)
 		//		urg & 1 << i);
 		x += w;
 	}
+
 	w = TEXTW(m->ltsymbol);
 	drw_setscheme(drw, scheme[SchemeLayout]);
 	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);

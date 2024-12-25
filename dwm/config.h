@@ -67,8 +67,10 @@ static const char *const autostart[] = {
 	"blueman-applet", NULL,
 	"volctl", NULL,
 	"polychromatic-tray-applet", NULL,
-	//"discord", NULL,
+	"discord", NULL,
+	//"steam", NULL,
 	"st", NULL,
+	"sc-controller", NULL,
 	//"caprine", NULL,
 	NULL /* terminate */
 };
@@ -95,7 +97,10 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class      	  instance   title   tags mask   isfloating   monitor */
-	{ "Eog", 		  NULL, 	 NULL,   0, 		 1, 		  -1 }
+	{ "Eog", 		   NULL, 	 NULL,   0, 		 1, 		  -1 },
+	{ "steam", 		   NULL, 	 NULL,   1 << 6, 	 0, 		  -1 },
+	{ "discord", 	   NULL, 	 NULL, 	 1 << 2, 	 0, 		  -1 },
+	{ "SC Controller", NULL,     NULL,   1 << 8, 	 1, 		  -1 }
 };
 
 /* layout(s) */
@@ -132,7 +137,8 @@ static const char *dmenucmd[] 	= { "dmenu_run", "-m", dmenumon, "-fn", dmenufont
 static const char *termcmd[] 	= { "st", NULL };
 //static const char *clipmenu[]     = { "clipmenu", NULL };
 static const char *pcmanfm[] 	= { "pcmanfm", NULL };
-static const char *rofi[] 	    = { "rofi", "-show", "drun", "-theme", "~/.config/rofi/config.rasi", NULL };
+/*static const char *rofi[] 	    = { "rofi", "-show", "drun", "-theme", "~/.config/rofi/config.rasi", NULL };*/
+static const char *rofi[] 		= { "launcher.sh", NULL };
 static const char *powermenu[]  = { "powermenu.sh", NULL };
 static const char *picom[] 		= { "picom" };
 static const char *kill_picom[] = { "killall", "picom" };
