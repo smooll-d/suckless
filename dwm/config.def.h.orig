@@ -23,7 +23,7 @@ static const int user_bh            	 = 6;   /* 2 is the default spacing around 
 static const unsigned int colorfultag    = 1;   /* 0 means use SchemeSel for selected tag */
 
 // Fonts
-static const char *fonts[]          	 = { "JetBrainsMono Nerd Font Mono:size=15" };
+static const char *fonts[]          	 = { "JetBrains Mono NF:size=14" };
 static const char dmenufont[]       	 = "Ubuntu Nerd Font:size=14";
 
 #include "themes/tokyo_night.h"
@@ -37,7 +37,7 @@ static const char dmenufont[]       	 = "Ubuntu Nerd Font:size=14";
 static const char *colors[][3] = {
 	/*               fg         bg         border   */
 	[SchemeNorm]   = { foreground, background, black  },
-	[SchemeSel]    = { foreground, border, 	   border },
+	[SchemeSel]    = { foreground, background, border },
 	[SchemeTag]    = { foreground, background, black  },
     [SchemeTag1]   = { border,     background, black  },
 	[SchemeTag2]   = { "#ff4444",  background, black  },
@@ -48,38 +48,37 @@ static const char *colors[][3] = {
 	[SchemeTag7]   = { "#9400d3",  background, black  },
 	[SchemeTag8]   = { "#fec260",  background, black  },
 	[SchemeTag9]   = { "#f05454",  background, black  },
-	[SchemeLayout] = { foreground, background, black  }
+	[SchemeLayout] = { "#c0c0c0", background, black  }
 };
 
 #define ICONSIZE 24   /* icon size */
 #define ICONSPACING 5 /* space between icon and title */
+#define ICON_OFFSET 15 /* offset between layout characters and icon */
 
 static const char *const autostart[] = {
 	"lxsession", "-s", "/usr/share/xsession/dwm.desktop", NULL,
 	"dwmblocks", NULL,
 	"nitrogen", "--restore", NULL,
-	"ibus-daemon", "-drxRn", "dwm", NULL,
-	"deadd-notification-center", NULL,
+	"wired", NULL,
 	"systemctl", "--user", "import-environment", "DISPLAY", NULL,
 	"parcellite", NULL,
 	"redshift", "-l", "54.00696:15.98751", "-t", "6500:3500", NULL,
-	//"xbindkeys", "-f", ".xbindkeysrc", NULL,
 	"nm-applet", NULL,
 	"blueman-applet", NULL,
 	"volctl", NULL,
 	"polychromatic-tray-applet", NULL,
-	"kitty", NULL,
 	"discord", NULL,
-	"caprine", NULL,
-	"otd-daemon", NULL,
-	//"python3", "/home/smoolldev/SmoollDev/Development/Python/OpenRazer/multicolor.py", NULL,
+	//"steam", NULL,
+	"st", NULL,
+	"sc-controller", NULL,
+	//"caprine", NULL,
 	NULL /* terminate */
 };
 
 static const char *autostart_lockfile = "/tmp/dwm-autostart.lock";
 
 /* tagging */
-static const char *tags[] = { "", "󰖟", "󰝚", "󰃣", "", "", "7", "8", "9" };
+static const char *tags[] = { "", "󰖟", "", "󰝚", "󰃣", "", "", "", "" };
 
 static const int tagschemes[] = { SchemeTag1, SchemeTag2, SchemeTag3,
                                   SchemeTag4, SchemeTag5, SchemeTag6,
@@ -98,7 +97,13 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class      	  instance   title   tags mask   isfloating   monitor */
-	{ "Eog", 		  NULL, 	 NULL,   0, 		 1, 		  -1 }
+	{ "Eog", 		     NULL, 	 NULL,   0, 		 1, 		  -1 },
+	{ "steam", 		     NULL, 	 NULL,   1 << 6, 	 0, 		  -1 },
+	{ "discord", 	     NULL, 	 NULL, 	 1 << 2, 	 0, 		  -1 },
+	{ "SC Controller",   NULL,   NULL,   1 << 8, 	 1, 		  -1 },
+	{ "Spotify", 	     NULL, 	 NULL,   1 << 3, 	 0, 		  -1 },
+	{ "Thorium-browser", NULL,   NULL,   1 << 1,     0, 		  -1 },
+	{ "Caja", 			 NULL,   NULL,   1 << 5,     0,           -1 }
 };
 
 /* layout(s) */
@@ -110,9 +115,9 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "[]=",      tile },    /* first entry is default */
-	{ "><>",      NULL },    /* no layout function means floating behavior */
-	{ "[M]",      monocle },
+	{ " ",      tile },    /* first entry is default */
+	{ " ",      NULL },    /* no layout function means floating behavior */
+	{ " ",      monocle },
 };
 
 /* key definitions */
@@ -130,17 +135,19 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] 	= { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", foreground, "-nf", background, "-sb", border, "-sf", black, NULL };
-static const char *termcmd[]  	= { "kitty", NULL };
+static const char *dmenucmd[] 		= { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", foreground, "-nf", background, "-sb", border, "-sf", black, NULL };
+//static const char *termcmd[]  	= { "tabbed", "-c", "-d", "-r", "2", "st", "-w", "''", NULL };
+static const char *termcmd[] 		= { "st", NULL };
 //static const char *clipmenu[]     = { "clipmenu", NULL };
-static const char *pcmanfm[] 	= { "pcmanfm", NULL };
-static const char *rofi[] 	    = { "rofi", "-show", "drun", "-theme", "~/.config/rofi/config.rasi", NULL };
-static const char *powermenu[]  = { "powermenu.sh", NULL };
-static const char *picom[] 		= { "picom" };
-static const char *kill_picom[] = { "killall", "picom" };
-static const char *bsethalf[] 	= { "brightnessctl", "s", "50%" };
-static const char *bsetone[]	= { "brightnessctl", "s", "0" };
-static const char *screenshot[] = { "gnome-screenshot" };
+static const char *file_explorer[] 	= { "caja", NULL };
+/*static const char *rofi[] 	    = { "rofi", "-show", "drun", "-theme", "~/.config/rofi/config.rasi", NULL };*/
+static const char *rofi[] 			= { "launcher.sh", NULL };
+static const char *powermenu[]  	= { "powermenu.sh", NULL };
+static const char *picom[] 			= { "picom" };
+static const char *kill_picom[] 	= { "killall", "picom" };
+static const char *bsethalf[] 		= { "brightnessctl", "s", "50%" };
+static const char *bsetone[]		= { "brightnessctl", "s", "0" };
+static const char *screenshot[] 	= { "gnome-screenshot" };
 
 // Keys
 static const Key keys[] = {
@@ -187,7 +194,7 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
-	{ MODKEY|ShiftMask, 			XK_e, 	   spawn, 		   {.v = pcmanfm } },
+	{ MODKEY|ShiftMask, 			XK_e, 	   spawn, 		   {.v = file_explorer } },
 	{ MODKEY, 						XK_q, 	   spawn, 		   {.v = powermenu } },
 	{ MODKEY, 						XK_n, 	   spawn, 		   SHCMD("kill -s USR1 $(pidof deadd-notification-center)") },
 	{ MODKEY, 						XK_p, 	   spawn, 		   {.v = picom } },

@@ -16,6 +16,10 @@ static const int showsystray        	 = 1;   /* 0 means no systray */
 static const int showbar             	 = 1;   /* 0 means no standard bar */
 static const int topbar             	 = 1;   /* 0 means standard bar at bottom */
 
+// statuspadding
+static const int horizpadbar        = 4;        /* horizontal padding for statusbar */
+static const int vertpadbar         = 0;        /* vertical padding for statusbar */
+
 // Custom bar height
 static const int user_bh            	 = 6;   /* 2 is the default spacing around the bar's font */
 
@@ -26,7 +30,7 @@ static const unsigned int colorfultag    = 1;   /* 0 means use SchemeSel for sel
 static const char *fonts[]          	 = { "JetBrains Mono NF:size=14" };
 static const char dmenufont[]       	 = "Ubuntu Nerd Font:size=14";
 
-#include "themes/tokyo_night.h"
+#include "themes/catppuccin.h"
 
 // Colors
 // static const char background[]       	 = "#111111";
@@ -40,15 +44,15 @@ static const char *colors[][3] = {
 	[SchemeSel]    = { foreground, background, border },
 	[SchemeTag]    = { foreground, background, black  },
     [SchemeTag1]   = { border,     background, black  },
-	[SchemeTag2]   = { "#ff4444",  background, black  },
-    [SchemeTag3]   = { "#ffff00",  background, black  },
-    [SchemeTag4]   = { "#00ff00",  background, black  },
-    [SchemeTag5]   = { "#0000ff",  background, black  },
-	[SchemeTag6]   = { "#4b0082",  background, black  },
-	[SchemeTag7]   = { "#9400d3",  background, black  },
-	[SchemeTag8]   = { "#fec260",  background, black  },
-	[SchemeTag9]   = { "#f05454",  background, black  },
-	[SchemeLayout] = { foreground, background, black  }
+	[SchemeTag2]   = { "#528ff2",  background, black  },
+    [SchemeTag3]   = { "#e39d9e",  background, black  },
+    [SchemeTag4]   = { "#ac6ced",  background, black  },
+    [SchemeTag5]   = { "#57beb0",  background, black  },
+	[SchemeTag6]   = { "#7ac075",  background, black  },
+	[SchemeTag7]   = { "#eac161",  background, black  },
+	[SchemeTag8]   = { "#f18f4e",  background, black  },
+	[SchemeTag9]   = { "#da7387",  background, black  },
+	[SchemeLayout] = { "#ef96d9", background, black  }
 };
 
 #define ICONSIZE 24   /* icon size */
@@ -97,10 +101,13 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class      	  instance   title   tags mask   isfloating   monitor */
-	{ "Eog", 		   NULL, 	 NULL,   0, 		 1, 		  -1 },
-	{ "steam", 		   NULL, 	 NULL,   1 << 6, 	 0, 		  -1 },
-	{ "discord", 	   NULL, 	 NULL, 	 1 << 2, 	 0, 		  -1 },
-	{ "SC Controller", NULL,     NULL,   1 << 8, 	 1, 		  -1 }
+	{ "Eog", 		     NULL, 	 NULL,   0, 		 1, 		  -1 },
+	{ "steam", 		     NULL, 	 NULL,   1 << 6, 	 0, 		  -1 },
+	{ "discord", 	     NULL, 	 NULL, 	 1 << 2, 	 0, 		  -1 },
+	{ "SC Controller",   NULL,   NULL,   1 << 8, 	 1, 		  -1 },
+	{ "Spotify", 	     NULL, 	 NULL,   1 << 3, 	 0, 		  -1 },
+	{ "Thorium-browser", NULL,   NULL,   1 << 1,     0, 		  -1 },
+	{ "Caja", 			 NULL,   NULL,   1 << 5,     0,           -1 }
 };
 
 /* layout(s) */
@@ -112,9 +119,9 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "[]=",      tile },    /* first entry is default */
-	{ "><>",      NULL },    /* no layout function means floating behavior */
-	{ "[M]",      monocle },
+	{ " ",      tile },    /* first entry is default */
+	{ " ",      NULL },    /* no layout function means floating behavior */
+	{ " ",      monocle },
 };
 
 /* key definitions */
@@ -132,19 +139,19 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] 	= { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", foreground, "-nf", background, "-sb", border, "-sf", black, NULL };
+static const char *dmenucmd[] 		= { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", foreground, "-nf", background, "-sb", border, "-sf", black, NULL };
 //static const char *termcmd[]  	= { "tabbed", "-c", "-d", "-r", "2", "st", "-w", "''", NULL };
-static const char *termcmd[] 	= { "st", NULL };
+static const char *termcmd[] 		= { "st", NULL };
 //static const char *clipmenu[]     = { "clipmenu", NULL };
-static const char *pcmanfm[] 	= { "pcmanfm", NULL };
+static const char *file_explorer[] 	= { "caja", NULL };
 /*static const char *rofi[] 	    = { "rofi", "-show", "drun", "-theme", "~/.config/rofi/config.rasi", NULL };*/
-static const char *rofi[] 		= { "launcher.sh", NULL };
-static const char *powermenu[]  = { "powermenu.sh", NULL };
-static const char *picom[] 		= { "picom" };
-static const char *kill_picom[] = { "killall", "picom" };
-static const char *bsethalf[] 	= { "brightnessctl", "s", "50%" };
-static const char *bsetone[]	= { "brightnessctl", "s", "0" };
-static const char *screenshot[] = { "gnome-screenshot" };
+static const char *rofi[] 			= { "launcher.sh", NULL };
+static const char *powermenu[]  	= { "powermenu.sh", NULL };
+static const char *picom[] 			= { "picom" };
+static const char *kill_picom[] 	= { "killall", "picom" };
+static const char *bsethalf[] 		= { "brightnessctl", "s", "50%" };
+static const char *bsetone[]		= { "brightnessctl", "s", "0" };
+static const char *screenshot[] 	= { "gnome-screenshot" };
 
 // Keys
 static const Key keys[] = {
@@ -191,7 +198,7 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
-	{ MODKEY|ShiftMask, 			XK_e, 	   spawn, 		   {.v = pcmanfm } },
+	{ MODKEY|ShiftMask, 			XK_e, 	   spawn, 		   {.v = file_explorer } },
 	{ MODKEY, 						XK_q, 	   spawn, 		   {.v = powermenu } },
 	{ MODKEY, 						XK_n, 	   spawn, 		   SHCMD("kill -s USR1 $(pidof deadd-notification-center)") },
 	{ MODKEY, 						XK_p, 	   spawn, 		   {.v = picom } },

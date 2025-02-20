@@ -125,6 +125,15 @@ static const ColorScheme schemes[] = {
 	  "#5c5cff", "magenta", "cyan", "white",
 	  [256]="#cccccc", "#555555"}, 7, 0, 256, 257},
 
+    // catppuccin (my version of mocha)
+    {{"#000000", "#e55887", "#7ac075", "#eac161",
+      "#528ff2", "#ef96d9", "#67beb0", "#a8b7eb",
+      "#595d71", "#da7387", "#7ac075", "#eac161",
+      "#4caad2", "#ac6ced", "#59bccd", "#afb8d8",
+      [256] = "#8792fd", /* cursor (lavender) */
+      [257] = "#e8bab2"}, /* reverse cursor (rosewater) */
+      7, 0, 256, 257},
+
 	// tokyonight (based on kitty)
 	{{"#1a1b26", "#f7768e", "#73daca", "#e0af68",
 	  "#7aa2f7", "#bb9af7", "#7dcfff", "#c0caf5",

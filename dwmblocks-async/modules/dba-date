@@ -3,4 +3,4 @@
 date=$(date +'%d/%m/%Y')
 hour=$(date +'%H:%M')
 
-echo ^b#7aa2f7^^c#1a1b26^"  "^d^^c#7aa2f7^ $date ^d^^b#e0c66a^^c#1a1b26^" 󰥔 "^d^^c#e0c66a^ $hour ^d^
+echo ^b#528ff2^^c#000000^"  "^d^^c#528ff2^ $date ^d^^b#eac161^^c#000000^" 󰥔 "^d^^c#eac161^ $hour ^d^
