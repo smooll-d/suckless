@@ -52,7 +52,7 @@ static const char *colors[][3] = {
 	[SchemeTag7]   = { "#eac161",  background, black  },
 	[SchemeTag8]   = { "#f18f4e",  background, black  },
 	[SchemeTag9]   = { "#da7387",  background, black  },
-	[SchemeLayout] = { "#ef96d9", background, black  }
+	[SchemeLayout] = { "#595d71",  background, black  }
 };
 
 #define ICONSIZE 24   /* icon size */
