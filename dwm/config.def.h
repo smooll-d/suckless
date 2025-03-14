@@ -66,15 +66,15 @@ static const char *const autostart[] = {
 	"wired", NULL,
 	"systemctl", "--user", "import-environment", "DISPLAY", NULL,
 	"parcellite", NULL,
-	"redshift", "-l", "54.00696:15.98751", "-t", "6500:3500", NULL,
+	"redshift", "-t", "6500:3500", NULL,
 	"nm-applet", NULL,
 	"blueman-applet", NULL,
 	"volctl", NULL,
 	"polychromatic-tray-applet", NULL,
-	"discord", NULL,
+	/*"discord", NULL,*/
 	//"steam", NULL,
 	"st", NULL,
-	"sc-controller", NULL,
+	/*"sc-controller", NULL,*/
 	//"caprine", NULL,
 	NULL /* terminate */
 };
