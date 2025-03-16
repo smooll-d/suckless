@@ -66,7 +66,7 @@ static const char *const autostart[] = {
 	"wired", NULL,
 	"systemctl", "--user", "import-environment", "DISPLAY", NULL,
 	"parcellite", NULL,
-	"redshift", "-t", "6500:3500", NULL,
+	"redshift", NULL,
 	"nm-applet", NULL,
 	"blueman-applet", NULL,
 	"volctl", NULL,
