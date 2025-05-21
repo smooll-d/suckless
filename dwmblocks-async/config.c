@@ -5,7 +5,7 @@
 
 Block blocks[] = {
     //{ "dba-updates", 3600, 0 },
-    { "dba-disksize", 60, 0 },
+    /*{ "dba-disksize", 60, 0 },*/
     { "dba-date", 30,  0 },
     { "dba-battery", 60, 0 }
 };

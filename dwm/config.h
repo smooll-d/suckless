@@ -15,6 +15,9 @@ static const int showsystray        	 = 1;   /* 0 means no systray */
 // dwmbar
 static const int showbar             	 = 1;   /* 0 means no standard bar */
 static const int topbar             	 = 1;   /* 0 means standard bar at bottom */
+static const int vertpad                 = 15;  /* vertical padding of bar */
+static const int sidepad                 = 15;  /* horizontal padding of bar */
+static const int spacing                 = 10;  /* spacing between bar and systray */
 
 // statuspadding
 static const int horizpadbar        = 4;        /* horizontal padding for statusbar */
@@ -40,19 +43,19 @@ static const char dmenufont[]       	 = "Ubuntu Nerd Font:size=14";
 // static const char white[] 			 	 = "#ffffff";
 static const char *colors[][3] = {
 	/*               fg         bg         border   */
-	[SchemeNorm]   = { foreground, background, black  },
-	[SchemeSel]    = { foreground, background, border },
-	[SchemeTag]    = { foreground, background, black  },
-    [SchemeTag1]   = { border,     background, black  },
-	[SchemeTag2]   = { "#528ff2",  background, black  },
-    [SchemeTag3]   = { "#e39d9e",  background, black  },
-    [SchemeTag4]   = { "#ac6ced",  background, black  },
-    [SchemeTag5]   = { "#57beb0",  background, black  },
-	[SchemeTag6]   = { "#7ac075",  background, black  },
-	[SchemeTag7]   = { "#eac161",  background, black  },
-	[SchemeTag8]   = { "#f18f4e",  background, black  },
-	[SchemeTag9]   = { "#da7387",  background, black  },
-	[SchemeLayout] = { "#595d71",  background, black  }
+	[SchemeNorm]   = { normfgcolor, normbgcolor, selbordercolor  },
+	[SchemeSel]    = { normfgcolor, normbgcolor, normbordercolor },
+	[SchemeTag]    = { normfgcolor, normbgcolor, selbordercolor },
+    [SchemeTag1]   = { normbordercolor, normbgcolor, selbordercolor  },
+	[SchemeTag2]   = { "#528ff2",  normbgcolor, selbordercolor  },
+    [SchemeTag3]   = { "#e39d9e",  normbgcolor, selbordercolor  },
+    [SchemeTag4]   = { "#ac6ced",  normbgcolor, selbordercolor  },
+    [SchemeTag5]   = { "#57beb0",  normbgcolor, selbordercolor  },
+	[SchemeTag6]   = { "#7ac075",  normbgcolor, selbordercolor  },
+	[SchemeTag7]   = { "#eac161",  normbgcolor, selbordercolor  },
+	[SchemeTag8]   = { "#f18f4e",  normbgcolor, selbordercolor  },
+	[SchemeTag9]   = { "#da7387",  normbgcolor, selbordercolor  },
+	[SchemeLayout] = { "#595d71",  normbgcolor, selbordercolor  }
 };
 
 #define ICONSIZE 24   /* icon size */
@@ -71,7 +74,7 @@ static const char *const autostart[] = {
 	"blueman-applet", NULL,
 	"volctl", NULL,
 	"polychromatic-tray-applet", NULL,
-	/*"discord", NULL,*/
+	"discord", NULL,
 	//"steam", NULL,
 	"st", NULL,
 	/*"sc-controller", NULL,*/
@@ -106,7 +109,7 @@ static const Rule rules[] = {
 	{ "discord", 	     NULL, 	 NULL, 	 1 << 2, 	 0, 		  -1 },
 	{ "SC Controller",   NULL,   NULL,   1 << 8, 	 1, 		  -1 },
 	{ "Spotify", 	     NULL, 	 NULL,   1 << 3, 	 0, 		  -1 },
-	{ "Thorium-browser", NULL,   NULL,   1 << 1,     0, 		  -1 },
+	{ "zen",             NULL,   NULL,   1 << 1,     0, 		  -1 },
 	{ "Caja", 			 NULL,   NULL,   1 << 5,     0,           -1 }
 };
 
@@ -138,8 +141,9 @@ static const Layout layouts[] = {
 #define STATUSBAR "dwmblocks"
 
 /* commands */
-static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] 		= { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", foreground, "-nf", background, "-sb", border, "-sf", black, NULL };
+// static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
+// static const char *dmenucmd[] 		= { "dmenu_run", "-m", dmenumon, NULL };
+// static const char *dmenudesktop[]   = { "dmenu_run_desktop", "-m", dmenumon, NULL };
 //static const char *termcmd[]  	= { "tabbed", "-c", "-d", "-r", "2", "st", "-w", "''", NULL };
 static const char *termcmd[] 		= { "st", NULL };
 //static const char *clipmenu[]     = { "clipmenu", NULL };
@@ -157,6 +161,7 @@ static const char *screenshot[] 	= { "gnome-screenshot" };
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_r,      spawn,          {.v = rofi } },
+    // { MODKEY|ShiftMask,             XK_r,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY|ShiftMask, 			XK_b, 	   spawn, 	   	   {.v = bsetone } },
@@ -171,6 +176,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
+    { MODKEY|ShiftMask,             XK_t,      toggleborder,   {0} },
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
@@ -199,7 +205,7 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask, 			XK_e, 	   spawn, 		   {.v = file_explorer } },
-	{ MODKEY, 						XK_q, 	   spawn, 		   {.v = powermenu } },
+	{ MODKEY, 						XK_F4, 	   spawn, 		   {.v = powermenu } },
 	{ MODKEY, 						XK_n, 	   spawn, 		   SHCMD("kill -s USR1 $(pidof deadd-notification-center)") },
 	{ MODKEY, 						XK_p, 	   spawn, 		   {.v = picom } },
 	{ MODKEY|ShiftMask, 			XK_p, 	   spawn, 		   {.v = kill_picom } },
