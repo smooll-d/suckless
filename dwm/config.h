@@ -33,7 +33,7 @@ static const unsigned int colorfultag    = 1;   /* 0 means use SchemeSel for sel
 static const char *fonts[]          	 = { "JetBrains Mono NF:size=14" };
 static const char dmenufont[]       	 = "Ubuntu Nerd Font:size=14";
 
-#include "themes/catppuccin.h"
+#include "themes/moonfly.h"
 
 // Colors
 // static const char background[]       	 = "#111111";
@@ -43,19 +43,19 @@ static const char dmenufont[]       	 = "Ubuntu Nerd Font:size=14";
 // static const char white[] 			 	 = "#ffffff";
 static const char *colors[][3] = {
 	/*               fg         bg         border   */
-	[SchemeNorm]   = { normfgcolor, normbgcolor, selbordercolor  },
+	[SchemeNorm]   = { normfgcolor, normbgcolor, "#000000"  },
 	[SchemeSel]    = { normfgcolor, normbgcolor, normbordercolor },
-	[SchemeTag]    = { normfgcolor, normbgcolor, selbordercolor },
-    [SchemeTag1]   = { normbordercolor, normbgcolor, selbordercolor  },
-	[SchemeTag2]   = { "#528ff2",  normbgcolor, selbordercolor  },
-    [SchemeTag3]   = { "#e39d9e",  normbgcolor, selbordercolor  },
-    [SchemeTag4]   = { "#ac6ced",  normbgcolor, selbordercolor  },
-    [SchemeTag5]   = { "#57beb0",  normbgcolor, selbordercolor  },
-	[SchemeTag6]   = { "#7ac075",  normbgcolor, selbordercolor  },
-	[SchemeTag7]   = { "#eac161",  normbgcolor, selbordercolor  },
-	[SchemeTag8]   = { "#f18f4e",  normbgcolor, selbordercolor  },
-	[SchemeTag9]   = { "#da7387",  normbgcolor, selbordercolor  },
-	[SchemeLayout] = { "#595d71",  normbgcolor, selbordercolor  }
+	[SchemeTag]    = { normfgcolor, normbgcolor, normbordercolor },
+    [SchemeTag1]   = { normbordercolor, normbgcolor, normbordercolor  },
+	[SchemeTag2]   = { tag2,  normbgcolor, normbordercolor  },
+    [SchemeTag3]   = { tag3,  normbgcolor, normbordercolor  },
+    [SchemeTag4]   = { tag4,  normbgcolor, normbordercolor  },
+    [SchemeTag5]   = { tag5,  normbgcolor, normbordercolor  },
+	[SchemeTag6]   = { tag6,  normbgcolor, normbordercolor  },
+	[SchemeTag7]   = { tag7,  normbgcolor, normbordercolor  },
+	[SchemeTag8]   = { tag8,  normbgcolor, normbordercolor  },
+	[SchemeTag9]   = { tag9,  normbgcolor, normbordercolor  },
+	[SchemeLayout] = { layout,  normbgcolor, normbordercolor  }
 };
 
 #define ICONSIZE 24   /* icon size */
@@ -63,7 +63,8 @@ static const char *colors[][3] = {
 #define ICON_OFFSET 15 /* offset between layout characters and icon */
 
 static const char *const autostart[] = {
-	"lxsession", "-s", "/usr/share/xsession/dwm.desktop", NULL,
+	"lxsession", "-s", "/usr/share/xsessions/dwm.desktop", NULL,
+    "udiskie", "-a", NULL,
 	"dwmblocks", NULL,
 	"nitrogen", "--restore", NULL,
 	"wired", NULL,
@@ -74,11 +75,12 @@ static const char *const autostart[] = {
 	"blueman-applet", NULL,
 	"volctl", NULL,
 	"polychromatic-tray-applet", NULL,
-	"discord", NULL,
+	// "discord", NULL,
 	//"steam", NULL,
 	"st", NULL,
 	/*"sc-controller", NULL,*/
 	//"caprine", NULL,
+    "picom", NULL,
 	NULL /* terminate */
 };
 
@@ -110,7 +112,7 @@ static const Rule rules[] = {
 	{ "SC Controller",   NULL,   NULL,   1 << 8, 	 1, 		  -1 },
 	{ "Spotify", 	     NULL, 	 NULL,   1 << 3, 	 0, 		  -1 },
 	{ "zen",             NULL,   NULL,   1 << 1,     0, 		  -1 },
-	{ "Caja", 			 NULL,   NULL,   1 << 5,     0,           -1 }
+	{ "Pcmanfm", 		 NULL,   NULL,   1 << 5,     0,           -1 }
 };
 
 /* layout(s) */
@@ -147,7 +149,7 @@ static const Layout layouts[] = {
 //static const char *termcmd[]  	= { "tabbed", "-c", "-d", "-r", "2", "st", "-w", "''", NULL };
 static const char *termcmd[] 		= { "st", NULL };
 //static const char *clipmenu[]     = { "clipmenu", NULL };
-static const char *file_explorer[] 	= { "caja", NULL };
+static const char *file_explorer[] 	= { "pcmanfm", NULL };
 /*static const char *rofi[] 	    = { "rofi", "-show", "drun", "-theme", "~/.config/rofi/config.rasi", NULL };*/
 static const char *rofi[] 			= { "launcher.sh", NULL };
 static const char *powermenu[]  	= { "powermenu.sh", NULL };

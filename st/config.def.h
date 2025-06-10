@@ -125,6 +125,15 @@ static const ColorScheme schemes[] = {
 	  "#5c5cff", "magenta", "cyan", "white",
 	  [256]="#cccccc", "#555555"}, 7, 0, 256, 257},
 
+    // moonfly
+    {{"#080808", "#ff5d5d", "#8cc85f", "#e3c78a",
+      "#80a0ff", "#cf87e8", "#79dac8", "#c6c6c6",
+      "#949494", "#ff5189", "#36c692", "#c6c684",
+      "#74b2ff", "#ae81ff", "#85dc85", "#e4e4e4",
+      [256] = "#9e9e9e", // Cursor color
+      [257] = "#080808"}, // Reverse cursor color (cursor text bg)
+      7, 0, 256, 257},
+
     // catppuccin (my version of mocha)
     {{"#000000", "#e55887", "#7ac075", "#eac161",
       "#528ff2", "#ef96d9", "#67beb0", "#a8b7eb",

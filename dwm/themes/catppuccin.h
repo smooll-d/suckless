@@ -1,7 +1,12 @@
 static const char normbgcolor[]     = "#000000";
 static const char normbordercolor[] = "#e55887";
 static const char normfgcolor[]     = "#a8b7eb";
-static const char white[]           = "#aaaaaa";
-static const char selbgcolor[]      = "#ffffff";
-static const char selfgcolor[]      = "#555555";
-static const char selbordercolor[] 	= "#000000";
+static const char tag2[]            = "#528ff2";
+static const char tag3[]            = "#e39d9e";
+static const char tag4[]            = "#ac6ced";
+static const char tag5[]            = "#57beb0";
+static const char tag6[]            = "#7ac075";
+static const char tag7[]            = "#eac161";
+static const char tag8[]            = "#f18f4e";
+static const char tag9[]            = "#da7387";
+static const char layout[]          = "#595d71";
