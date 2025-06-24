@@ -1,0 +1,37 @@
+--- dwm.c
++++ dwm.c
+@@ -62,7 +64,7 @@
+ /* enums */
+ enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
+ enum { SchemeNorm, SchemeSel }; /* color schemes */
+-enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
++enum { NetSupported, NetWMName, NetWMIcon, NetWMState, NetWMCheck,
+        NetWMFullscreen, NetActiveWindow, NetWMWindowType,
+        NetWMWindowTypeDialog, NetClientList, NetLast }; /* EWMH atoms */
+ enum { WMProtocols, WMDelete, WMState, WMTakeFocus, WMLast }; /* default atoms */
+@@ -95,6 +97,7 @@ struct Client {
+ 	int bw, oldbw;
+ 	unsigned int tags;
+ 	int isfixed, isfloating, isurgent, neverfocus, oldstate, isfullscreen;
++	unsigned int icw, ich; Picture icon;
+ 	Client *next;
+ 	Client *snext;
+ 	Monitor *mon;
+@@ -740,7 +746,8 @@ drawbar(Monitor *m)
+ 	if ((w = m->ww - tw - x) > bh) {
+ 		if (m->sel) {
+ 			drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
+-			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);
++			drw_text(drw, x, 0, w, bh, lrpad / 2 + (m->sel->icon ? m->sel->icw + ICONSPACING : 0), m->sel->name, 0);
++			if (m->sel->icon) drw_pic(drw, x + lrpad / 2, (bh - m->sel->ich) / 2, m->sel->icw, m->sel->ich, m->sel->icon);
+ 			if (m->sel->isfloating)
+ 				drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
+ 		} else {
+@@ -1632,6 +1706,7 @@ setup(void)
+ 	netatom[NetActiveWindow] = XInternAtom(dpy, "_NET_ACTIVE_WINDOW", False);
+ 	netatom[NetSupported] = XInternAtom(dpy, "_NET_SUPPORTED", False);
+ 	netatom[NetWMName] = XInternAtom(dpy, "_NET_WM_NAME", False);
++	netatom[NetWMIcon] = XInternAtom(dpy, "_NET_WM_ICON", False);
+ 	netatom[NetWMState] = XInternAtom(dpy, "_NET_WM_STATE", False);
+ 	netatom[NetWMCheck] = XInternAtom(dpy, "_NET_SUPPORTING_WM_CHECK", False);
+ 	netatom[NetWMFullscreen] = XInternAtom(dpy, "_NET_WM_STATE_FULLSCREEN", False);

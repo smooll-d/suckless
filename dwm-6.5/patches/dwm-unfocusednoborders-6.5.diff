@@ -1,0 +1,42 @@
+From 6800ba5aa83502012f6a51a00534edacaee7820f Mon Sep 17 00:00:00 2001
+From: Jakub Skowron <jakubskowron676@gmail.com>
+Date: Tue, 24 Jun 2025 14:46:46 +0200
+Subject: [PATCH] remove borders on unfocused windows
+
+This patch completely removes borders on all windows that are not
+focused and adds them back in once they are (e.g. once hovered over).
+---
+ dwm.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/dwm.c b/dwm.c
+index 1443802..7b2bc88 100644
+--- a/dwm.c
++++ b/dwm.c
+@@ -800,7 +800,11 @@ focus(Client *c)
+ 		detachstack(c);
+ 		attachstack(c);
+ 		grabbuttons(c, 1);
++
++        c->bw = borderpx;
+ 		XSetWindowBorder(dpy, c->win, scheme[SchemeSel][ColBorder].pixel);
++        arrange(c->mon);
++
+ 		setfocus(c);
+ 	} else {
+ 		XSetInputFocus(dpy, root, RevertToPointerRoot, CurrentTime);
+@@ -1767,7 +1771,10 @@ unfocus(Client *c, int setfocus)
+ 	if (!c)
+ 		return;
+ 	grabbuttons(c, 0);
+-	XSetWindowBorder(dpy, c->win, scheme[SchemeNorm][ColBorder].pixel);
++
++    c->bw = 0;
++    arrange(c->mon);
++
+ 	if (setfocus) {
+ 		XSetInputFocus(dpy, root, RevertToPointerRoot, CurrentTime);
+ 		XDeleteProperty(dpy, root, netatom[NetActiveWindow]);
+-- 
+2.50.0
+
