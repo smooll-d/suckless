@@ -1142,7 +1142,11 @@ focus(Client *c)
 		detachstack(c);
 		attachstack(c);
 		grabbuttons(c, 1);
+
+        c->bw = borderpx;
 		XSetWindowBorder(dpy, c->win, scheme[SchemeSel][ColBorder].pixel);
+        arrange(c->mon);
+
 		setfocus(c);
 	} else {
 		XSetInputFocus(dpy, root, RevertToPointerRoot, CurrentTime);
@@ -1773,12 +1777,15 @@ quit(const Arg *arg)
 	if(arg->i) restart = 1;
 
 	/* kill child processes */
-	for (i = 0; i < autostart_len; i++) {
-		if (0 < autostart_pids[i] && restart == 0) {
-			kill(autostart_pids[i], SIGTERM);
-			waitpid(autostart_pids[i], NULL, 0);
-		}
-	}
+    if (restart == 0)
+    {
+        for (i = 0; i < autostart_len; i++) {
+            if (0 < autostart_pids[i]) {
+                kill(autostart_pids[i], SIGTERM);
+                waitpid(autostart_pids[i], NULL, 0);
+            }
+        }
+    }
 
 	if ((fp = fopen(autostart_lockfile, "r"))) {
 		if (restart == 0)
@@ -2514,7 +2521,11 @@ unfocus(Client *c, int setfocus)
 	if (!c)
 		return;
 	grabbuttons(c, 0);
+
+    c->bw = 0;
 	XSetWindowBorder(dpy, c->win, scheme[SchemeNorm][ColBorder].pixel);
+    arrange(c->mon);
+
 	if (setfocus) {
 		XSetInputFocus(dpy, root, RevertToPointerRoot, CurrentTime);
 		XDeleteProperty(dpy, root, netatom[NetActiveWindow]);
@@ -3121,8 +3132,14 @@ main(int argc, char *argv[])
 {
 	if (argc == 2 && !strcmp("-v", argv[1]))
 		die("dwm-"VERSION);
+	if (argc == 2 && !strcmp("-a", argv[1]))
+    {
+        FILE *autofile = fopen(autostart_lockfile, "w");
+        if (autofile)
+            fclose(autofile);
+    }
 	else if (argc != 1)
-		die("usage: dwm [-v]");
+		die("usage: dwm [-v -a]");
 	if (!setlocale(LC_CTYPE, "") || !XSupportsLocale())
 		fputs("warning: no locale support\n", stderr);
 	if (!(dpy = XOpenDisplay(NULL)))
