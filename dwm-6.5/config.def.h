@@ -16,6 +16,7 @@ static const int sidepad            = 10;       /* horizontal padding of bar */
 static const int user_bh            = 2;        /* 2 is the default spacing around the bar's font */
 static const char *fonts[]          = { "monospace:size=10" };
 static const char dmenufont[]       = "monospace:size=10";
+static const unsigned int colorfultag = 1;  /* 0 means use SchemeSel for selected tag */
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
@@ -23,8 +24,19 @@ static const char col_gray4[]       = "#eeeeee";
 static const char col_cyan[]        = "#005577";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+	[SchemeNorm]   = { col_gray3, col_gray1, col_gray2 },
+	[SchemeSel]    = { col_gray4, col_cyan,  col_cyan  },
+    [SchemeTag]    = { col_br_black,    col_bg,    col_black },
+    [SchemeTag1]   = { col_fg,          col_dark,  col_black },
+	[SchemeTag2]   = { col_red,         col_dark,  col_black },
+    [SchemeTag3]   = { col_br_yellow,   col_dark,  col_black },
+    [SchemeTag4]   = { col_br_blue,     col_dark,  col_black },
+    [SchemeTag5]   = { col_br_magenta,  col_dark,  col_black },
+	[SchemeTag6]   = { col_br_cyan,     col_dark,  col_black },
+	[SchemeTag7]   = { col_br_green,    col_dark,  col_black },
+	[SchemeTag8]   = { col_yellow,      col_dark,  col_black },
+	[SchemeTag9]   = { col_br_red,      col_dark,  col_black },
+	[SchemeLayout] = { col_white,       col_bg,    col_black },
 };
 
 static const char *autostart_lockfile = "/tmp/dwm-autostart.lock";
@@ -34,7 +46,10 @@ static const char *const autostart[] = {
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tags[]     = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const int tagschemes[] = { SchemeTag1, SchemeTag2, SchemeTag3,
+                                  SchemeTag4, SchemeTag5, SchemeTag6,
+                                  SchemeTag7, SchemeTag8, SchemeTag9 };
 
 static const unsigned int ulinepad	= 5;	/* horizontal padding between the underline and tag */
 static const unsigned int ulinestroke	= 2;	/* thickness / height of the underline */
@@ -101,6 +116,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
+    { MODKEY|ShiftMask,             XK_t,      togglecolorfultag, {0} },
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
