@@ -7,5 +7,4 @@ My configs for suckless software.
 
 - dwm
 - st
-- dmenu
 - dwmblocks-async (not made by suckless)
