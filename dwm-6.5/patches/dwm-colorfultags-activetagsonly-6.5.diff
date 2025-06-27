@@ -1,0 +1,26 @@
+From 28a30660eb31a9d1c465bee85eb7bc5e1eb59672 Mon Sep 17 00:00:00 2001
+From: Jakub Skowron <jakubskowron676@gmail.com>
+Date: Wed, 25 Jun 2025 16:03:53 +0200
+Subject: [PATCH] Color only active tags
+
+This update will color only the tags which have windows in them
+---
+ dwm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/dwm.c b/dwm.c
+index 649e542..4dd0742 100644
+--- a/dwm.c
++++ b/dwm.c
+@@ -727,7 +727,7 @@ drawbar(Monitor *m)
+ 	x = 0;
+ 	for (i = 0; i < LENGTH(tags); i++) {
+ 		w = TEXTW(tags[i]);
+-        drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? (m->colorfultags ? tagschemes[i] : SchemeSel) : SchemeTag]);
++        drw_setscheme(drw, scheme[occ & 1 << i ? (m->colorfultag ? tagschemes[i] : SchemeSel) : SchemeTag]);
+ 		drw_text(drw, x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i);
+ 		if (occ & 1 << i)
+ 			drw_rect(drw, x + boxs, boxs, boxw, boxw,
+-- 
+2.50.0
+

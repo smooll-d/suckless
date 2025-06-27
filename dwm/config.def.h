@@ -67,7 +67,6 @@ static const char *const autostart[] = {
     "udiskie", "-a", NULL,
 	"dwmblocks", NULL,
 	"nitrogen", "--restore", NULL,
-	"wired", NULL,
 	"systemctl", "--user", "import-environment", "DISPLAY", NULL,
 	"parcellite", NULL,
 	"redshift", NULL,
@@ -124,9 +123,9 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ " ",      tile },    /* first entry is default */
-	{ " ",      NULL },    /* no layout function means floating behavior */
-	{ " ",      monocle },
+	{ " ",       tile },    /* first entry is default */
+	{ " ",       NULL },    /* no layout function means floating behavior */
+	{ " ",       monocle },
 };
 
 /* key definitions */

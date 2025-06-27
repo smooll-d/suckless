@@ -1,0 +1,117 @@
+From ccf3a9fa8391deabc463db6cd3846794828111d6 Mon Sep 17 00:00:00 2001
+From: Jakub Skowron <jakubskowron676@gmail.com>
+Date: Thu, 26 Jun 2025 21:00:08 +0200
+Subject: [PATCH] remove/add borders around floating windows
+
+---
+ dwm.c | 59 ++++++++++++++++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 50 insertions(+), 9 deletions(-)
+
+diff --git a/dwm.c b/dwm.c
+index 7b2bc88..8377d2b 100644
+--- a/dwm.c
++++ b/dwm.c
+@@ -141,6 +141,7 @@ typedef struct {
+ } Rule;
+ 
+ /* function declarations */
++static void addborders(Client *c);
+ static void applyrules(Client *c);
+ static int applysizehints(Client *c, int *x, int *y, int *w, int *h, int interact);
+ static void arrange(Monitor *m);
+@@ -188,6 +189,7 @@ static void pop(Client *c);
+ static void propertynotify(XEvent *e);
+ static void quit(const Arg *arg);
+ static Monitor *recttomon(int x, int y, int w, int h);
++static void removeborders(Client *c);
+ static void resize(Client *c, int x, int y, int w, int h, int interact);
+ static void resizeclient(Client *c, int x, int y, int w, int h);
+ static void resizemouse(const Arg *arg);
+@@ -274,6 +276,30 @@ static Window root, wmcheckwin;
+ struct NumTags { char limitexceeded[LENGTH(tags) > 31 ? -1 : 1]; };
+ 
+ /* function implementations */
++void
++addborders(Client *c)
++{
++    if (!c->isfullscreen && (c->isfloating || c->mon->lt[c->mon->sellt]->arrange == NULL)) {
++        XWindowChanges wc;
++
++        wc.width = c->oldw;
++        wc.height = c->oldh;
++        wc.border_width = borderpx;
++
++        c->w = wc.width += c->bw * 2;
++        c->h = wc.height += c->bw * 2;
++
++        XConfigureWindow(dpy, c->win, CWWidth | CWHeight | CWBorderWidth, &wc);
++        XSetWindowBorder(dpy, c->win, scheme[SchemeSel][ColBorder].pixel);
++        configure(c);
++        XSync(dpy, False);
++    } else {
++        c->bw = borderpx;
++        XSetWindowBorder(dpy, c->win, scheme[SchemeSel][ColBorder].pixel);
++        arrange(c->mon);
++    }
++}
++
+ void
+ applyrules(Client *c)
+ {
+@@ -800,11 +826,7 @@ focus(Client *c)
+ 		detachstack(c);
+ 		attachstack(c);
+ 		grabbuttons(c, 1);
+-
+-        c->bw = borderpx;
+-		XSetWindowBorder(dpy, c->win, scheme[SchemeSel][ColBorder].pixel);
+-        arrange(c->mon);
+-
++        addborders(c);
+ 		setfocus(c);
+ 	} else {
+ 		XSetInputFocus(dpy, root, RevertToPointerRoot, CurrentTime);
+@@ -1278,6 +1300,28 @@ recttomon(int x, int y, int w, int h)
+ 	return r;
+ }
+ 
++void
++removeborders(Client *c)
++{
++    if (!c->isfullscreen && (c->isfloating || c->mon->lt[c->mon->sellt]->arrange == NULL)) {
++        XWindowChanges wc;
++
++        wc.width = c->w;
++        wc.height = c->h;
++        wc.border_width = 0;
++
++        c->w = wc.width += c->bw * 2;
++        c->h = wc.height += c->bw * 2;
++
++        XConfigureWindow(dpy, c->win, CWWidth | CWHeight | CWBorderWidth, &wc);
++        configure(c);
++        XSync(dpy, False);
++    } else {
++        c->bw = 0;
++        arrange(c->mon);
++    }
++}
++
+ void
+ resize(Client *c, int x, int y, int w, int h, int interact)
+ {
+@@ -1771,10 +1815,7 @@ unfocus(Client *c, int setfocus)
+ 	if (!c)
+ 		return;
+ 	grabbuttons(c, 0);
+-
+-    c->bw = 0;
+-    arrange(c->mon);
+-
++    removeborders(c);
+ 	if (setfocus) {
+ 		XSetInputFocus(dpy, root, RevertToPointerRoot, CurrentTime);
+ 		XDeleteProperty(dpy, root, netatom[NetActiveWindow]);
+-- 
+2.50.0
+
