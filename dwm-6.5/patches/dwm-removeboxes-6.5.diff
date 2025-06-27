@@ -1,0 +1,48 @@
+From dd804ef1b7a545092ecec7268c679f34f77ff76d Mon Sep 17 00:00:00 2001
+From: Jakub Skowron <jakubskowron676@gmail.com>
+Date: Wed, 25 Jun 2025 18:08:44 +0200
+Subject: [PATCH] Remove boxes on tags and floating window title
+
+This patch completely removes those small rectangles on active and
+inactive tags as well as the rectangle that appears when a window
+is in the floating layout.
+---
+ dwm.c | 8 --------
+ 1 file changed, 8 deletions(-)
+
+diff --git a/dwm.c b/dwm.c
+index 1443802..08b3767 100644
+--- a/dwm.c
++++ b/dwm.c
+@@ -698,8 +698,6 @@ void
+ drawbar(Monitor *m)
+ {
+ 	int x, w, tw = 0;
+-	int boxs = drw->fonts->h / 9;
+-	int boxw = drw->fonts->h / 6 + 2;
+ 	unsigned int i, occ = 0, urg = 0;
+ 	Client *c;
+ 
+@@ -723,10 +721,6 @@ drawbar(Monitor *m)
+ 		w = TEXTW(tags[i]);
+ 		drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
+ 		drw_text(drw, x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i);
+-		if (occ & 1 << i)
+-			drw_rect(drw, x + boxs, boxs, boxw, boxw,
+-				m == selmon && selmon->sel && selmon->sel->tags & 1 << i,
+-				urg & 1 << i);
+ 		x += w;
+ 	}
+ 	w = TEXTW(m->ltsymbol);
+@@ -737,8 +731,6 @@ drawbar(Monitor *m)
+ 		if (m->sel) {
+ 			drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
+ 			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);
+-			if (m->sel->isfloating)
+-				drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
+ 		} else {
+ 			drw_setscheme(drw, scheme[SchemeNorm]);
+ 			drw_rect(drw, x, 0, w, bh, 1, 1);
+-- 
+2.50.0
+
