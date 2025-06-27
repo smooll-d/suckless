@@ -1,11 +1,11 @@
 # suckless
-My configs for suckless products.
+My configs for suckless software.
 
-## What suckless Products?
+## What suckless Software?
 >[!NOTE]
->Guides for each product are in their respective directories.
+>More on each program (e.g. patches, installation instructions) is inside of said program's directory.
 
 - dwm
 - st
-
-I'm not counting dwmblocks-async as a suckless product because it wasn't made by suckless (pretty logical in my honest and humble opinion).
+- dmenu
+- dwmblocks-async (not made by suckless)
