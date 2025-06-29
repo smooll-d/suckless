@@ -1,4 +1,4 @@
-# [st](st.suckless.org)
+# [st](https://st.suckless.org)
 <p align="center">
     <img src="../assets/st_current_configuration.png" alt="st Showcase">
 </p>

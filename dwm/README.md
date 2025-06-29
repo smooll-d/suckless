@@ -1,4 +1,4 @@
-# [dwm](dwm.suckless.org)
+# [dwm](https://dwm.suckless.org)
 <p align="center">
     <img src="../assets/dwm_current_configuration.png" alt="dwm Showcase">
 </p>
