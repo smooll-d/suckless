@@ -5,7 +5,7 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "JetBrains Mono:size=16";
+static char *font = "Liberation Mono:pixelsize=12:antialias=true:autohint=true";
 static int borderpx = 2;
 
 /*
@@ -103,7 +103,7 @@ char *termname = "st-256color";
  *
  *	stty tabs
  */
-unsigned int tabspaces = 4;
+unsigned int tabspaces = 8;
 
 typedef struct {
 	const char* const colors[258]; /* terminal colors */
@@ -123,31 +123,6 @@ static const ColorScheme schemes[] = {
 	  "blue2", "magenta3", "cyan3", "gray90",
 	  "gray50", "red", "green", "yellow",
 	  "#5c5cff", "magenta", "cyan", "white",
-	  [256]="#cccccc", "#555555"}, 7, 0, 256, 257},
-
-    // moonfly
-    {{"#080808", "#ff5d5d", "#8cc85f", "#e3c78a",
-      "#80a0ff", "#cf87e8", "#79dac8", "#c6c6c6",
-      "#949494", "#ff5189", "#36c692", "#c6c684",
-      "#74b2ff", "#ae81ff", "#85dc85", "#e4e4e4",
-      [256] = "#9e9e9e", // Cursor color
-      [257] = "#080808"}, // Reverse cursor color (cursor text bg)
-      7, 0, 256, 257},
-
-    // catppuccin (my version of mocha)
-    {{"#000000", "#e55887", "#7ac075", "#eac161",
-      "#528ff2", "#ef96d9", "#67beb0", "#a8b7eb",
-      "#595d71", "#da7387", "#7ac075", "#eac161",
-      "#4caad2", "#ac6ced", "#59bccd", "#afb8d8",
-      [256] = "#8792fd", /* cursor (lavender) */
-      [257] = "#e8bab2"}, /* reverse cursor (rosewater) */
-      7, 0, 256, 257},
-
-	// tokyonight (based on kitty)
-	{{"#1a1b26", "#f7768e", "#73daca", "#e0af68",
-	  "#7aa2f7", "#bb9af7", "#7dcfff", "#c0caf5",
-	  "#1a1b26", "#f7768e", "#73daca", "#e0af68",
-	  "#7aa2f7", "#bb9af7", "#7dcfff", "#c0caf5",
 	  [256]="#cccccc", "#555555"}, 7, 0, 256, 257},
 
 	// Alacritty (dark)
@@ -201,7 +176,7 @@ static const ColorScheme schemes[] = {
 };
 
 static const char * const * colorname;
-int colorscheme = 1;
+int colorscheme = 0;
 
 /*
  * Default colors (colorname index)
@@ -232,8 +207,8 @@ static Rune stcursor = 0x2603; /* snowman ("☃") */
  * Default columns and rows numbers
  */
 
-static unsigned int cols = 145;
-static unsigned int rows = 34;
+static unsigned int cols = 80;
+static unsigned int rows = 24;
 
 /*
  * Default colour and shape of the mouse cursor
@@ -259,7 +234,7 @@ static uint forcemousemod = ShiftMask;
  * Internal mouse shortcuts.
  * Beware that overloading Button1 will disable the selection.
  */
-const unsigned int mousescrollincrement = 5;
+const unsigned int mousescrollincrement = 1;
 static MouseShortcut mshortcuts[] = {
 	/* mask                 button   function        argument       release */
 	{ XK_ANY_MOD,           Button4, kscrollup,      {.i = mousescrollincrement},		0, /* !alt */ -1 },
@@ -289,8 +264,6 @@ static Shortcut shortcuts[] = {
 	{ TERMMOD,              XK_Y,           selpaste,       {.i =  0} },
 	{ ShiftMask,            XK_Insert,      selpaste,       {.i =  0} },
 	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
-	{ ShiftMask,            XK_Page_Up,     kscrollup,      {.i = mousescrollincrement} },
-    { ShiftMask,            XK_Page_Down,   kscrolldown,    {.i = mousescrollincrement} },
 	{ MODKEY,               XK_1,           selectscheme,   {.i =  0} },
 	{ MODKEY,               XK_2,           selectscheme,   {.i =  1} },
 	{ MODKEY,               XK_3,           selectscheme,   {.i =  2} },
@@ -302,6 +275,8 @@ static Shortcut shortcuts[] = {
 	{ MODKEY,               XK_9,           selectscheme,   {.i =  8} },
 	{ MODKEY,               XK_0,           nextscheme,     {.i = +1} },
 	{ MODKEY|ControlMask,   XK_0,           nextscheme,     {.i = -1} },
+	{ ShiftMask,            XK_Page_Up,     kscrollup,      {.i = -1} },
+	{ ShiftMask,            XK_Page_Down,   kscrolldown,    {.i = -1} },
 };
 
 /*

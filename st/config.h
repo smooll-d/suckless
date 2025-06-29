@@ -5,7 +5,7 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "JetBrains Mono:size=16";
+static char *font = "JetBrains Mono NF:size=16:antialias=true:autohint=true";
 static int borderpx = 2;
 
 /*
@@ -118,90 +118,18 @@ typedef struct {
  * foreground, background, cursor, reverse cursor
  */
 static const ColorScheme schemes[] = {
-	// st (dark)
-	{{"black", "red3", "green3", "yellow3",
-	  "blue2", "magenta3", "cyan3", "gray90",
-	  "gray50", "red", "green", "yellow",
-	  "#5c5cff", "magenta", "cyan", "white",
-	  [256]="#cccccc", "#555555"}, 7, 0, 256, 257},
-
-    // moonfly
+	// moonfly
     {{"#080808", "#ff5d5d", "#8cc85f", "#e3c78a",
       "#80a0ff", "#cf87e8", "#79dac8", "#c6c6c6",
       "#949494", "#ff5189", "#36c692", "#c6c684",
       "#74b2ff", "#ae81ff", "#85dc85", "#e4e4e4",
       [256] = "#9e9e9e", // Cursor color
       [257] = "#080808"}, // Reverse cursor color (cursor text bg)
-      7, 0, 256, 257},
-
-    // catppuccin (my version of mocha)
-    {{"#000000", "#e55887", "#7ac075", "#eac161",
-      "#528ff2", "#ef96d9", "#67beb0", "#a8b7eb",
-      "#595d71", "#da7387", "#7ac075", "#eac161",
-      "#4caad2", "#ac6ced", "#59bccd", "#afb8d8",
-      [256] = "#8792fd", /* cursor (lavender) */
-      [257] = "#e8bab2"}, /* reverse cursor (rosewater) */
-      7, 0, 256, 257},
-
-	// tokyonight (based on kitty)
-	{{"#1a1b26", "#f7768e", "#73daca", "#e0af68",
-	  "#7aa2f7", "#bb9af7", "#7dcfff", "#c0caf5",
-	  "#1a1b26", "#f7768e", "#73daca", "#e0af68",
-	  "#7aa2f7", "#bb9af7", "#7dcfff", "#c0caf5",
-	  [256]="#cccccc", "#555555"}, 7, 0, 256, 257},
-
-	// Alacritty (dark)
-	{{"#1d1f21", "#cc6666", "#b5bd68", "#f0c674",
-	  "#81a2be", "#b294bb", "#8abeb7", "#c5c8c6",
-	  "#666666", "#d54e53", "#b9ca4a", "#e7c547",
-	  "#7aa6da", "#c397d8", "#70c0b1", "#eaeaea",
-	  [256]="#cccccc", "#555555"}, 7, 0, 256, 257},
-
-	// One Half dark
-	{{"#282c34", "#e06c75", "#98c379", "#e5c07b",
-	  "#61afef", "#c678dd", "#56b6c2", "#dcdfe4",
-	  "#282c34", "#e06c75", "#98c379", "#e5c07b",
-	  "#61afef", "#c678dd", "#56b6c2", "#dcdfe4",
-	  [256]="#cccccc", "#555555"}, 7, 0, 256, 257},
-
-	// One Half light
-	{{"#fafafa", "#e45649", "#50a14f", "#c18401",
-      "#0184bc", "#a626a4", "#0997b3", "#383a42",
-	  "#fafafa", "#e45649", "#50a14f", "#c18401",
-	  "#0184bc", "#a626a4", "#0997b3", "#383a42",
-	  [256]="#cccccc", "#555555"}, 7, 0, 256, 257},
-
-	// Solarized dark
-	{{"#073642", "#dc322f", "#859900", "#b58900",
-	  "#268bd2", "#d33682", "#2aa198", "#eee8d5",
-	  "#002b36", "#cb4b16", "#586e75", "#657b83",
-	  "#839496", "#6c71c4", "#93a1a1", "#fdf6e3",
-	  [256]="#93a1a1", "#fdf6e3"}, 12, 8, 256, 257},
-
-	// Solarized light
-	{{"#eee8d5", "#dc322f", "#859900", "#b58900",
-	  "#268bd2", "#d33682", "#2aa198", "#073642",
-	  "#fdf6e3", "#cb4b16", "#93a1a1", "#839496",
-	  "#657b83", "#6c71c4", "#586e75", "#002b36",
-	  [256]="#586e75", "#002b36"}, 12, 8, 256, 257},
-
-	// Gruvbox dark
-	{{"#282828", "#cc241d", "#98971a", "#d79921",
-	  "#458588", "#b16286", "#689d6a", "#a89984",
-	  "#928374", "#fb4934", "#b8bb26", "#fabd2f",
-	  "#83a598", "#d3869b", "#8ec07c", "#ebdbb2",
-	  [256]="#ebdbb2", "#555555"}, 15, 0, 256, 257},
-
-	// Gruvbox light
-	{{"#fbf1c7", "#cc241d", "#98971a", "#d79921",
-	  "#458588", "#b16286", "#689d6a", "#7c6f64",
-	  "#928374", "#9d0006", "#79740e", "#b57614",
-	  "#076678", "#8f3f71", "#427b58", "#3c3836",
-	  [256]="#3c3836", "#555555"}, 15, 0, 256, 257},
+      7, 0, 256, 257}
 };
 
 static const char * const * colorname;
-int colorscheme = 1;
+int colorscheme = 0;
 
 /*
  * Default colors (colorname index)
@@ -232,8 +160,8 @@ static Rune stcursor = 0x2603; /* snowman ("☃") */
  * Default columns and rows numbers
  */
 
-static unsigned int cols = 145;
-static unsigned int rows = 34;
+static unsigned int cols = 80;
+static unsigned int rows = 24;
 
 /*
  * Default colour and shape of the mouse cursor
@@ -261,14 +189,14 @@ static uint forcemousemod = ShiftMask;
  */
 const unsigned int mousescrollincrement = 5;
 static MouseShortcut mshortcuts[] = {
-	/* mask                 button   function        argument       release */
-	{ XK_ANY_MOD,           Button4, kscrollup,      {.i = mousescrollincrement},		0, /* !alt */ -1 },
-	{ XK_ANY_MOD,           Button5, kscrolldown,    {.i = mousescrollincrement},		0, /* !alt */ -1 },
-	{ XK_ANY_MOD,           Button2, selpaste,       {.i = 0},      1 },
-	{ ShiftMask,            Button4, ttysend,        {.s = "\033[5;2~"} },
-	{ XK_ANY_MOD,           Button4, ttysend,        {.s = "\031"} },
-	{ ShiftMask,            Button5, ttysend,        {.s = "\033[6;2~"} },
-	{ XK_ANY_MOD,           Button5, ttysend,        {.s = "\005"} },
+	/* mask                 button   function        argument                     release */
+	{ XK_ANY_MOD,           Button4, kscrollup,      {.i = mousescrollincrement}, 0, /* !alt */ -1 },
+	{ XK_ANY_MOD,           Button5, kscrolldown,    {.i = mousescrollincrement}, 0, /* !alt */ -1 },
+	{ XK_ANY_MOD,           Button2, selpaste,       {.i = 0},                    1                },
+	{ ShiftMask,            Button4, ttysend,        {.s = "\033[5;2~"}                            },
+	{ XK_ANY_MOD,           Button4, ttysend,        {.s = "\031"}                                 },
+	{ ShiftMask,            Button5, ttysend,        {.s = "\033[6;2~"}                            },
+	{ XK_ANY_MOD,           Button5, ttysend,        {.s = "\005"}                                 },
 };
 
 /* Internal keyboard shortcuts. */
@@ -289,8 +217,6 @@ static Shortcut shortcuts[] = {
 	{ TERMMOD,              XK_Y,           selpaste,       {.i =  0} },
 	{ ShiftMask,            XK_Insert,      selpaste,       {.i =  0} },
 	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
-	{ ShiftMask,            XK_Page_Up,     kscrollup,      {.i = mousescrollincrement} },
-    { ShiftMask,            XK_Page_Down,   kscrolldown,    {.i = mousescrollincrement} },
 	{ MODKEY,               XK_1,           selectscheme,   {.i =  0} },
 	{ MODKEY,               XK_2,           selectscheme,   {.i =  1} },
 	{ MODKEY,               XK_3,           selectscheme,   {.i =  2} },
@@ -302,6 +228,8 @@ static Shortcut shortcuts[] = {
 	{ MODKEY,               XK_9,           selectscheme,   {.i =  8} },
 	{ MODKEY,               XK_0,           nextscheme,     {.i = +1} },
 	{ MODKEY|ControlMask,   XK_0,           nextscheme,     {.i = -1} },
+	{ ShiftMask,            XK_Page_Up,     kscrollup,      {.i = -mousescrollincrement} },
+	{ ShiftMask,            XK_Page_Down,   kscrolldown,    {.i = -mousescrollincrement} },
 };
 
 /*
@@ -596,4 +524,4 @@ static char ascii_printable[] =
 #define UNDERCURL_SPIKY 1
 #define UNDERCURL_CAPPED 2
 // Active style
-#define UNDERCURL_STYLE UNDERCURL_SPIKY
+#define UNDERCURL_STYLE UNDERCURL_CURLY
