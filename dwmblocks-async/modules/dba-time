@@ -1,0 +1,37 @@
+#!/bin/bash
+
+time=$(date +'%H:%M')
+hour=$(date +'%H')
+
+print_date()
+{
+    echo ^b#85dc85^^c#080808^" $1 "^d^^c#85dc85^ $time ^d^
+}
+
+case "$hour" in
+    00|12) print_date 󱑊
+    ;;
+    01|13) print_date 󱐿
+    ;;
+    02|14) print_date 󱑀
+    ;;
+    03|15) print_date 󱑁
+    ;;
+    04|16) print_date 󱑂
+    ;;
+    05|17) print_date 󱑃
+    ;;
+    06|18) print_date 󱑄
+    ;;
+    07|19) print_date 󱑅
+    ;;
+    08|20) print_date 󱑆
+    ;;
+    09|21) print_date 󱑇
+    ;;
+    10|22) print_date 󱑈
+    ;;
+    11|23) print_date 󱑉
+    ;;
+    *) echo "err"
+esac
