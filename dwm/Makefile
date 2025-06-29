@@ -6,13 +6,7 @@ include config.mk
 SRC = drw.c dwm.c util.c
 OBJ = ${SRC:.c=.o}
 
-all: options dwm
-
-options:
-	@echo dwm build options:
-	@echo "CFLAGS   = ${CFLAGS}"
-	@echo "LDFLAGS  = ${LDFLAGS}"
-	@echo "CC       = ${CC}"
+all: dwm
 
 .c.o:
 	${CC} -c ${CFLAGS} $<
@@ -26,7 +20,7 @@ dwm: ${OBJ}
 	${CC} -o $@ ${OBJ} ${LDFLAGS}
 
 clean:
-	rm -f config.h dwm ${OBJ} dwm-${VERSION}.tar.gz *.rej
+	rm -f dwm ${OBJ} dwm-${VERSION}.tar.gz
 
 dist: clean
 	mkdir -p dwm-${VERSION}
@@ -38,15 +32,17 @@ dist: clean
 
 install: all
 	mkdir -p ${DESTDIR}${PREFIX}/bin
-	rm -f ${DESTDIR}${PREFIX}/bin/dwm
 	cp -f dwm ${DESTDIR}${PREFIX}/bin
 	chmod 755 ${DESTDIR}${PREFIX}/bin/dwm
 	mkdir -p ${DESTDIR}${MANPREFIX}/man1
 	sed "s/VERSION/${VERSION}/g" < dwm.1 > ${DESTDIR}${MANPREFIX}/man1/dwm.1
 	chmod 644 ${DESTDIR}${MANPREFIX}/man1/dwm.1
+	mkdir -p /usr/share/xsessions
+	cp dwm.desktop /usr/share/xsessions
 
 uninstall:
 	rm -f ${DESTDIR}${PREFIX}/bin/dwm\
-		${DESTDIR}${MANPREFIX}/man1/dwm.1
+		${DESTDIR}${MANPREFIX}/man1/dwm.1\
+		/usr/share/xsessions/dwm.desktop
 
-.PHONY: all options clean dist install uninstall
+.PHONY: all clean dist install uninstall
