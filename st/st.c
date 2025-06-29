@@ -1344,7 +1344,7 @@ tsetchar(Rune u, const Glyph *attr, int x, int y)
 	line[x].u = u;
 
 	if (isboxdraw(u))
-		term.screen[0].buffer[x][y].mode |= ATTR_BOXDRAW;
+		line[x].mode |= ATTR_BOXDRAW;
 }
 
 void
@@ -1857,7 +1857,7 @@ csihandle(void)
 			}
 			break;
 		case 1: /* above */
-			if (term.c.y > 1)
+			if (term.c.y > 0)
 				tclearregion(0, 0, term.col-1, term.c.y-1);
 			tclearregion(0, term.c.y, term.c.x, term.c.y);
 			break;
@@ -1953,7 +1953,11 @@ csihandle(void)
 		tcursor(CURSOR_SAVE);
 		break;
 	case 'u': /* DECRC -- Restore cursor position (ANSI.SYS) */
-		tcursor(CURSOR_LOAD);
+		if (csiescseq.priv) {
+			goto unknown;
+		} else {
+			tcursor(CURSOR_LOAD);
+		}
 		break;
 	case ' ':
 		switch (csiescseq.mode[1]) {
@@ -2332,8 +2336,8 @@ tupdatebgcolor(int oldbg, int newbg)
 {
 	for (int y = 0; y < term.row; y++) {
 		for (int x = 0; x < term.col; x++) {
-			if (term.screen[0].buffer[y][x].bg == oldbg)
-				term.screen[0].buffer[y][x].bg = newbg;
+			if (TLINE(y)[x].bg == oldbg)
+				TLINE(y)[x].bg = newbg;
 		}
 	}
 }
@@ -2343,8 +2347,8 @@ tupdatefgcolor(int oldfg, int newfg)
 {
 	for (int y = 0; y < term.row; y++) {
 		for (int x = 0; x < term.col; x++) {
-			if (term.screen[0].buffer[y][x].fg == oldfg)
-				term.screen[0].buffer[y][x].fg = newfg;
+			if (TLINE(y)[x].fg == oldfg)
+				TLINE(y)[x].fg = newfg;
 		}
 	}
 }
