@@ -49,8 +49,9 @@ $ sudo ./install.sh
 This is a list of all modules inside `modules/`:
 
 - [dba-battery](modules/dba-battery) - Displays battery percentage and an icon that changes based on it.
-- [dba-date](modules/dba-date) - Displays the date (in DD/MM/YYYY format) and time (24-hour format) with icons (time icon updates based on the hour)
-- [dba-disksize](modules/dba-disksize) - Displays the `used/total (free)` disk space.
-- [dba-updates](modules/dba-updates) - Displays the amount of current updates.
+- [dba-date](modules/dba-date) - Displays the date (in DD/MM/YYYY format).
+- [dba-time](modules/dba-time) - Displays the time with an icon that updates based on the hour.
+- [dba-disksize](modules/dba-disksize) - Displays the `used/total (free)` disk space (disabled by default).
+- [dba-updates](modules/dba-updates) - Displays the amount of current updates (disabled by default, it's been disabled for so long, I don't even know if it works anymore).
 
 The modules `dwmblocks-async` displays can be changed inside of `config.h`.
