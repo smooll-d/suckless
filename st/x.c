@@ -1555,17 +1555,17 @@ xdrawglyphfontspecs(const XftGlyphFontSpec *specs, Glyph base, int len, int x, i
     if (dmode & DRAW_BG) {
         /* Intelligent cleaning up of the borders. */
         if (x == 0) {
-            xclear(0, (y == 0)? 0 : winy, borderpx,
+            xclear(0, (y == 0)? 0 : winy, win.hborderpx,
                    winy + win.ch +
-                   ((winy + win.ch >= borderpx + win.th)? win.h : 0));
+                   ((winy + win.ch >= win.vborderpx + win.th)? win.h : 0));
         }
-        if (winx + width >= borderpx + win.tw) {
+        if (winx + width >= win.hborderpx + win.tw) {
             xclear(winx + width, (y == 0)? 0 : winy, win.w,
-                   ((winy + win.ch >= borderpx + win.th)? win.h : (winy + win.ch)));
+                   ((winy + win.ch >= win.vborderpx + win.th)? win.h : (winy + win.ch)));
         }
         if (y == 0)
-            xclear(winx, 0, winx + width, borderpx);
-        if (winy + win.ch >= borderpx + win.th)
+            xclear(winx, 0, winx + width, win.vborderpx);
+        if (winy + win.ch >= win.vborderpx + win.th)
             xclear(winx, winy + win.ch, winx + width, win.h);
         /* Fill the background */
         XftDrawRect(xw.draw, bg, winx, winy, width, win.ch);
