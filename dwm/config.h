@@ -20,7 +20,7 @@ static const int sidepad = 15; /* horizontal padding of bar */
 static const int user_bh = 6;  /* 2 is the default spacing around the bar's font */
 
 /* fonts */
-static const char *fonts[]    = { "JetBrains Mono NF:size=14" };
+static const char *fonts[]    = { "JetBrainsMono Nerd Font Propo:size=15" };
 static const char dmenufont[] = "Ubuntu Nerd Font:size=14";
 
 /* colors */
@@ -51,20 +51,19 @@ static const char *const autostart[]  = {
 	"lxsession", "-s", "/usr/share/xsessions/dwm.desktop", NULL,
     "systemctl", "--user", "import-environment", "DISPLAY", NULL,
     "udiskie", "-a", NULL,
-    "nitrogen", "--restore", NULL,
+    "/home/smooll/.fehbg", NULL,
     "picom", NULL,
     "parcellite", NULL,
     "redshift", NULL,
     "nm-applet", NULL,
     "blueman-applet", NULL,
     "volctl", NULL,
-    "polychromatic-tray-applet", NULL,
     "st", NULL,
 	NULL /* terminate */
 };
 
 /* tagging */
-static const char *tags[]              = { "", "󰖟", "", "󰝚", "󰃣", "", "", "", "" };
+static const char *tags[]              = { "", "󰖟", "", "󰝚", "󰃣", "", "", /*"",*/ "" };
 static const int tagschemes[]          = { SchemeTag1, SchemeTag2, SchemeTag3,
                                            SchemeTag4, SchemeTag5, SchemeTag6,
                                            SchemeTag7, SchemeTag8, SchemeTag9 };
@@ -85,7 +84,7 @@ static const Rule rules[] = {
     { "discord",       NULL,       NULL,       1 << 2,       0,           -1 },
     { "Spotify",       NULL,       NULL,       1 << 3,       0,           -1 },
 	{ "Gimp",          NULL,       NULL,       1 << 4,       0,           -1 },
-    { "Pcmanfm",       NULL,       NULL,       1 << 5,       0,           -1 },
+    { "Thunar",        NULL,       NULL,       1 << 5,       0,           -1 },
     { "steam",         NULL,       NULL,       1 << 6,       0,           -1 },
     { "SC Controller", NULL,       NULL,       1 << 8,       1,           -1 }
 };
@@ -125,9 +124,9 @@ static unsigned int statusspacing = 10; /* spacing between status bar and systra
 static char dmenumon[2]         = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[]   = { "dmenu_run", "-m", dmenumon };
 static const char *termcmd[]    = { "st", NULL };
-static const char *explorer[]   = { "pcmanfm", NULL };
+static const char *explorer[]   = { "thunar", NULL };
 static const char *rofi[]       = { "launcher.sh", NULL };
-static const char *powermenu[]  = { "powermenu.sh", NULL };
+static const char *powermenu[]  = { "powermenu", NULL };
 static const char *bsethalf[]   = { "brightnessctl", "s", "50%" };
 static const char *bsetzero[]   = { "brightnessctl", "s", "0%" };
 static const char *screenshot[] = { "gnome-screenshot", NULL };
