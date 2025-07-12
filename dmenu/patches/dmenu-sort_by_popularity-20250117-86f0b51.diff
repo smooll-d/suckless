@@ -1,0 +1,279 @@
+From e2cbe709046b733d2a770beb315ef5511abe9a19 Mon Sep 17 00:00:00 2001
+From: Wojciech Madry <madrywojciech99@gmail.com>
+Date: Fri, 17 Jan 2025 17:11:48 +0100
+Subject: [PATCH] Sort matches by popularity
+
+Patch will sort all matched instances by popularity.
+Each time you open any program, the popularity is increased by 1.
+The popularity is stored in the .cache folder.
+---
+ dmenu.c | 186 +++++++++++++++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 165 insertions(+), 21 deletions(-)
+
+diff --git a/dmenu.c b/dmenu.c
+index 804da64..cb26068 100644
+--- a/dmenu.c
++++ b/dmenu.c
+@@ -35,11 +35,13 @@ struct item {
+ 
+ static char text[BUFSIZ] = "";
+ static char *embed;
++static char *popcache = NULL;
+ static int bh, mw, mh;
+ static int inputw = 0, promptw;
+ static int lrpad; /* sum of left and right padding */
+ static size_t cursor;
+ static struct item *items = NULL;
++static struct item *popitems = NULL;
+ static struct item *matches, *matchend;
+ static struct item *prev, *curr, *next, *sel;
+ static int mon = -1, screen;
+@@ -105,7 +107,13 @@ cleanup(void)
+ 		free(scheme[i]);
+ 	for (i = 0; items && items[i].text; ++i)
+ 		free(items[i].text);
++	for (i = 0; popitems && popitems[i].text; ++i)
++		free(popitems[i].text);
+ 	free(items);
++	free(popitems);
++	if(popcache != NULL)
++		free(popcache);
++
+ 	drw_free(drw);
+ 	XSync(dpy, False);
+ 	XCloseDisplay(dpy);
+@@ -226,6 +234,57 @@ grabkeyboard(void)
+ 	die("cannot grab keyboard");
+ }
+ 
++static void
++sortitemsbypop(struct item* first, struct item* last)
++{
++	struct item* item = NULL;
++	struct item* pop = NULL;
++	size_t idx = 0;
++	for (pop = popitems; pop && pop->text; ++pop) {
++		for (item = first; item && item->text && (item <= last || last == NULL); item++) {
++			if(strcmp(item->text, pop->text) == 0) {
++				char* lhs = first[idx].text;
++				first[idx].text = item->text;
++				item->text = lhs;
++				++idx;
++				break;
++			}
++		}
++	}
++}
++
++static void
++incpop(struct item* sel) {
++	if(!(sel && sel->text))
++		return;
++	struct item* pop = NULL;
++	int found = 0;
++	FILE *out;
++	out = fopen(popcache, "w");
++	if (out == NULL) {
++		printf("Cannot open file '%s'", popcache);
++		return;
++	}
++	char decimal[16] = {'\0'};
++	for (pop = popitems; pop && pop->text; ++pop) {
++		if(found == 0 && strcmp(pop->text, sel->text) == 0) {
++			pop->out += 1;
++			found = 1;
++		}
++		fputs(pop->text, out);
++		fputs(" ", out);
++		sprintf(decimal, "%i", MIN(pop->out, 999));
++		fputs(decimal, out);
++		fputs("\n", out);
++	}
++	if(found == 0) {
++		fputs(sel->text, out);
++		fputs(" 1", out);
++		fputs("\n", out);
++	}
++	fclose(out);
++}
++
+ static void
+ match(void)
+ {
+@@ -234,17 +293,16 @@ match(void)
+ 
+ 	char buf[sizeof text], *s;
+ 	int i, tokc = 0;
+-	size_t len, textsize;
+-	struct item *item, *lprefix, *lsubstr, *prefixend, *substrend;
++	size_t textsize;
++	struct item *item, *others, *othersend;
+ 
+ 	strcpy(buf, text);
+ 	/* separate input text into tokens to be matched individually */
+ 	for (s = strtok(buf, " "); s; tokv[tokc - 1] = s, s = strtok(NULL, " "))
+ 		if (++tokc > tokn && !(tokv = realloc(tokv, ++tokn * sizeof *tokv)))
+ 			die("cannot realloc %zu bytes:", tokn * sizeof *tokv);
+-	len = tokc ? strlen(tokv[0]) : 0;
+ 
+-	matches = lprefix = lsubstr = matchend = prefixend = substrend = NULL;
++	matches = others = matchend = othersend = NULL;
+ 	textsize = strlen(text) + 1;
+ 	for (item = items; item && item->text; item++) {
+ 		for (i = 0; i < tokc; i++)
+@@ -252,29 +310,20 @@ match(void)
+ 				break;
+ 		if (i != tokc) /* not all tokens match */
+ 			continue;
+-		/* exact matches go first, then prefixes, then substrings */
++		/* exact matches go first, then others */
+ 		if (!tokc || !fstrncmp(text, item->text, textsize))
+ 			appenditem(item, &matches, &matchend);
+-		else if (!fstrncmp(tokv[0], item->text, len))
+-			appenditem(item, &lprefix, &prefixend);
+ 		else
+-			appenditem(item, &lsubstr, &substrend);
+-	}
+-	if (lprefix) {
+-		if (matches) {
+-			matchend->right = lprefix;
+-			lprefix->left = matchend;
+-		} else
+-			matches = lprefix;
+-		matchend = prefixend;
++			appenditem(item, &others, &othersend);
+ 	}
+-	if (lsubstr) {
++	if (others) {
++		sortitemsbypop(others, othersend);
+ 		if (matches) {
+-			matchend->right = lsubstr;
+-			lsubstr->left = matchend;
++			matchend->right = others;
++			others->left = matchend;
+ 		} else
+-			matches = lsubstr;
+-		matchend = substrend;
++			matches = others;
++		matchend = othersend;
+ 	}
+ 	curr = sel = matches;
+ 	calcoffsets();
+@@ -489,6 +538,7 @@ insert:
+ 		break;
+ 	case XK_Return:
+ 	case XK_KP_Enter:
++		incpop(sel);
+ 		puts((sel && !(ev->state & ShiftMask)) ? sel->text : text);
+ 		if (!(ev->state & ControlMask)) {
+ 			cleanup();
+@@ -711,6 +761,98 @@ setup(void)
+ 	drawmenu();
+ }
+ 
++static void
++itemize(struct item* item, const char* line, const ssize_t size)
++{
++	const size_t UNDEF = size + 1;
++	size_t firstchar = UNDEF, lastchar = UNDEF;
++	size_t firstnum = UNDEF;
++	size_t i;
++	int afterspace = 0;
++	for (i = 0 ; i < size ; ++i) {
++		const char c = line[i];
++		if (c == ' ') {
++			if (firstchar != UNDEF)
++				afterspace = 1;
++			continue;
++		}
++		if (afterspace == 1 && (c >= '0' && c <= '9')) {
++			firstnum = i;
++			break;
++		}
++		if (firstchar == UNDEF)
++			firstchar = i;
++		lastchar = i;
++	}
++	size_t len = lastchar - firstchar + 2;
++	item->text = (char*)malloc(sizeof(char) * len);
++	memcpy(item->text, line + firstchar, len);
++	item->text[len - 1] = '\0';
++
++	item->out = 0;
++	if (firstnum != UNDEF)
++		item->out = atoi(line + firstnum);
++}
++
++static int
++compareitembyoutrev(const void* lhs, const void* rhs)
++{
++	return ((struct item*)rhs)->out - ((struct item*)lhs)->out;
++}
++
++static void
++loadpopitems(void)
++{
++	const char* xdg_cache_home = getenv("XDG_CACHE_HOME");
++	const char* home = getenv("HOME");
++	char* cache = NULL;
++	const char* CACHE_FILENAME = "/dmenu_pop.txt";
++	if(xdg_cache_home != NULL) {
++		size_t xdglen = strlen(xdg_cache_home);
++		cache = (char*)malloc(xdglen + 1);
++		cache[xdglen] = '\0';
++		strcpy(cache, xdg_cache_home);
++	} else {
++		const char* cachefolder = "/.cache";
++		size_t hclen = strlen(home) + strlen(cachefolder) + 1;
++		cache = (char*)malloc(hclen + 1);
++		cache[hclen - 1] = '\0';
++		strcpy(cache, home);
++		strcpy(cache + strlen(home), cachefolder);
++	}
++	const size_t cache_size = strlen(cache) + strlen(CACHE_FILENAME) + 1;
++	popcache = (char*)malloc(sizeof(char) * cache_size);
++	popcache[cache_size - 1] = '\0';
++	strcpy(popcache, cache);
++	strcpy(popcache + strlen(cache), CACHE_FILENAME);
++	free(cache);
++
++	FILE * fp;
++	char * line = NULL;
++	size_t i, itemsiz = 0, linesiz = 0;
++	ssize_t len;
++
++	fp = fopen(popcache, "r");
++	if (fp == NULL)
++		return;
++
++	for (i = 0; (len = getline(&line, &linesiz, fp)) != -1; i++) {
++		if (i + 1 >= itemsiz) {
++			itemsiz += 256;
++			if (!(popitems = realloc(popitems, itemsiz * sizeof(*popitems))))
++				die("cannot realloc %zu bytes:", itemsiz * sizeof(*popitems));
++		}
++		itemize((struct item*)&popitems[i], line, len);
++	}
++	fclose(fp);
++	if (line)
++		free(line);
++
++	if (popitems)
++		popitems[i].text = NULL;
++	qsort(popitems, i, sizeof(struct item), compareitembyoutrev);
++}
++
+ static void
+ usage(void)
+ {
+@@ -788,6 +930,8 @@ main(int argc, char *argv[])
+ 		readstdin();
+ 		grabkeyboard();
+ 	}
++	loadpopitems();
++	sortitemsbypop(items, NULL);
+ 	setup();
+ 	run();
+ 
+-- 
+2.48.1
