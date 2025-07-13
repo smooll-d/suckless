@@ -5,7 +5,7 @@ hour=$(date +'%H')
 
 print_date()
 {
-    echo ^b#85dc85^^c#080808^" $1 "^d^^c#85dc85^ $time ^d^
+    echo ^b#85dc85^^c#080808^" $1 "^d^^c#85dc85^ ${time} ^d^
 }
 
 case "$hour" in

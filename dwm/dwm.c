@@ -929,7 +929,7 @@ dirtomon(int dir)
 
 int
 drawstatusbar(Monitor *m, int bh, char* stext) {
-	int ret, i, w, x, len;
+	int ret, i, j, w, x, len;
 	short isCode = 0;
 	char *text;
 	char *p;
@@ -938,7 +938,12 @@ drawstatusbar(Monitor *m, int bh, char* stext) {
 	if (!(text = (char*) malloc(sizeof(char)*len)))
 		die("malloc");
 	p = text;
-	memcpy(text, stext, len);
+
+	i = -1, j = 0;
+	while (stext[++i])
+		if ((unsigned char)stext[i] >= ' ')
+			text[j++] = stext[i];
+	text[j] = '\0';
 
 	/* compute width of the status text */
 	w = 0;
@@ -1051,7 +1056,7 @@ drawbar(Monitor *m)
 
 	/* draw status first so it can be overdrawn by tags later */
 	if (m == selmon) { /* status is only drawn on selected monitor */
-		tw = m->ww - drawstatusbar(m, bh, stext);
+		tw = statusw = m->ww - drawstatusbar(m, bh, stext);
 	}
 
     /* draw tags */

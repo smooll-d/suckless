@@ -2,4 +2,4 @@
 
 date=$(date +'%d/%m/%Y')
 
-echo ^b#ff5d5d^^c#080808^"  "^d^^c#ff5d5d^ $date ^d^
+echo ^b#ff5d5d^^c#080808^"  "^d^^c#ff5d5d^ ${date} ^d^

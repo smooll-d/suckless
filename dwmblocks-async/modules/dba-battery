@@ -6,7 +6,7 @@ battery=$(cat /sys/class/power_supply/BAT0/capacity | awk '{ print $0"%" }')
 
 print_battery()
 {
-    echo ^b#79dac8^^c#080808^" $1 "^d^^c#79dac8^ $battery^d^
+    echo ^b#79dac8^^c#080808^" $1 "^d^^c#79dac8^ ${battery}^d^
 }
 
 case "$_battery" in
