@@ -56,9 +56,22 @@ To open a powermenu (also using `rofi`), press `MOD+F4`.
 To switch between workspaces/tags, use `MOD+[1-9]`. `MOD+0` will show you all workspaces/tags at once.
 
 ### File Explorer
-To open a file explorer (the default one is `pcmanfm`), use `MOD+SHIFT+E`.
+To open a file explorer (the default one is `thunar`), use `MOD+SHIFT+E`.
 
 These are kind of the most important keybinds you have to know. If you'd like to see more of them, head on over to `config.h` and scroll down until the `keys` array of type `Key`.
+
+### dmenu Scripts
+My config of dmenu comes with a few handful scripts:
+
+- killmenu (`MOD+K`) - `kill -9` in GUI form.
+- powermenu (`MOD+F4`) - a power menu
+- wallpapermenu (`MOD+W`) - wallpaper selection menu and setter with the help of feh (changeable)
+- calculator (`MOD+Q`) - literal calculator built into dmenu curtesy of the amazing [qalc](https://tools.suckless.org/dmenu/patches/qalc/) patch
+
+>[!CAUTION]
+>You can't launch the default application launcher with a shortcut, as I use rofi for that.
+
+For a more in-depth explanation of these scripts and how they look in action, go [here](https://github.com/smooll-d/suckless/blob/master/dmenu/README.md)
 
 **HAVE FUN!**
 
