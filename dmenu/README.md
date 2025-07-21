@@ -40,7 +40,7 @@ This section will go over the available scripts inside of [scripts/](https://git
     <img src="../assets/killmenu.png" alt="killmenu Showcase">
 </p>
 
-Killmenu, simplified, is `ps aux` in GUI form.
+Killmenu, simplified, is `kill -9` in GUI form.
 
 >[!TIP]
 >If you're using a custom dmenu and are here just for the scripts, I recommend the amazing [fuzzymatch](https://tools.suckless.org/dmenu/patches/fuzzymatch/) patch for dmenu.
