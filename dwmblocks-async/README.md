@@ -48,9 +48,6 @@ $ sudo ./install.sh
 ## Modules
 This is a list of all modules inside `modules/`:
 
->[!CAUTION]
->Scripts are clickable, but due to the way I patched dwm, their click "hitbox" is offset.
-
 - [dba-battery](modules/dba-battery) - Displays battery percentage and an icon that changes based on it.
 - [dba-date](modules/dba-date) - Displays the date (in DD/MM/YYYY format).
 - [dba-time](modules/dba-time) - Displays the time with an icon that updates based on the hour.
