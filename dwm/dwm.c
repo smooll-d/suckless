@@ -1057,6 +1057,8 @@ drawbar(Monitor *m)
 	/* draw status first so it can be overdrawn by tags later */
 	if (m == selmon) { /* status is only drawn on selected monitor */
 		tw = statusw = m->ww - drawstatusbar(m, bh, stext);
+		/* add systraywidth, custom status spacing and halved lrpad so clickable blocks work */
+		statusw += getsystraywidth() + statusspacing + (lrpad / 2);
 	}
 
     /* draw tags */
