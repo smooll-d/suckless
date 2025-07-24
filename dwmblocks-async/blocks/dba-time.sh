@@ -19,51 +19,62 @@ print_date()
     echo ^b#85dc85^^c#080808^" $1 "^d^^c#85dc85^ "${time}" ^d^
 }
 
-display_mode_file="${HOME}/.local/state/dba_time_display_mode"
+main()
+{
+    dba_directory="${HOME}/.local/state/dba/time"
 
-hour=$(date +'%H')
+    display_mode_file="${dba_directory}/display_mode"
 
-if [[ -f ${display_mode_file} ]]; then
-    declare -i display_mode=$(< "${display_mode_file}")
-else
-    declare -i display_mode=0
-fi
+    hour=$(date +'%H')
 
-case $BLOCK_BUTTON in
-    1) display_mode+=1
-       echo ${display_mode} > "${display_mode_file}"
-       ;;
-    2|3) display_mode=0
-       echo ${display_mode} > "${display_mode_file}"
-       ;;
-esac
+    if [[ ! -d "${dba_directory}" ]]; then
+        mkdir -p "${dba_directory}"
+    fi
 
-change_display
+    if [[ -f ${display_mode_file} ]]; then
+        declare -i display_mode=$(< "${display_mode_file}")
+    else
+        declare -i display_mode=0
+    fi
 
-case "$hour" in
-    00|12) print_date 󱑊
-    ;;
-    01|13) print_date 󱐿
-    ;;
-    02|14) print_date 󱑀
-    ;;
-    03|15) print_date 󱑁
-    ;;
-    04|16) print_date 󱑂
-    ;;
-    05|17) print_date 󱑃
-    ;;
-    06|18) print_date 󱑄
-    ;;
-    07|19) print_date 󱑅
-    ;;
-    08|20) print_date 󱑆
-    ;;
-    09|21) print_date 󱑇
-    ;;
-    10|22) print_date 󱑈
-    ;;
-    11|23) print_date 󱑉
-    ;;
-    *) echo "err"
-esac
+    case $BLOCK_BUTTON in
+        1) display_mode+=1
+           echo ${display_mode} > "${display_mode_file}"
+           ;;
+        2|3) display_mode=0
+           echo ${display_mode} > "${display_mode_file}"
+           ;;
+    esac
+
+    change_display
+
+    case "$hour" in
+        00|12) print_date 󱑊
+        ;;
+        01|13) print_date 󱐿
+        ;;
+        02|14) print_date 󱑀
+        ;;
+        03|15) print_date 󱑁
+        ;;
+        04|16) print_date 󱑂
+        ;;
+        05|17) print_date 󱑃
+        ;;
+        06|18) print_date 󱑄
+        ;;
+        07|19) print_date 󱑅
+        ;;
+        08|20) print_date 󱑆
+        ;;
+        09|21) print_date 󱑇
+        ;;
+        10|22) print_date 󱑈
+        ;;
+        11|23) print_date 󱑉
+        ;;
+        *) echo "err"
+    esac
+}
+
+main
