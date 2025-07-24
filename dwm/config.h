@@ -47,6 +47,7 @@ static const char *colors[][3]        = {
 /* autostart */
 static const char *autostart_lockfile = "/tmp/dwm-autostart.lock";
 static const char *const autostart[]  = {
+	"xrandr", "--output", "eDP", "--set", "'scaling mode'", "'Full'", NULL,
     "dwmblocks", NULL,
 	"lxsession", "-s", "/usr/share/xsessions/dwm.desktop", NULL,
     "systemctl", "--user", "import-environment", "DISPLAY", NULL,
