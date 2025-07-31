@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-#TODO: Add date format change on right click
-
 change_format()
 {
     if [[ "$1" = "full" ]]; then
