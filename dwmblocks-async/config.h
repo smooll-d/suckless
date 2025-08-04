@@ -17,10 +17,11 @@
 #define TRAILING_DELIMITER 0
 
 // Define blocks for the status feed as X(icon, cmd, interval, signal).
-#define BLOCKS(X)             \
-    X("", "dba-date", 0, 1) \
-    X("", "dba-time", 60, 2) \
-    X("", "dba-battery", 60, 3) \
+#define BLOCKS(X) \
+    X("", "dba-volume", 0, 1) \
+    X("", "dba-date", 0, 2) \
+    X("", "dba-time", 60, 3) \
+    X("", "dba-battery", 60, 4) \
     /* X("", "dba-updates", 3600, 1)  \*/
     /* X("", "dba-disksize", 60, 2)   \*/
 
