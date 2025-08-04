@@ -51,19 +51,18 @@ static const char *const autostart[]  = {
 	"lxsession", "-s", "/usr/share/xsessions/dwm.desktop", NULL,
     "systemctl", "--user", "import-environment", "DISPLAY", NULL,
     "udiskie", "-a", NULL,
-    "/home/smooll/.fehbg", NULL,
+    "/bin/sh", "-c", "${HOME}/.fehbg", NULL,
     "picom", NULL,
     "parcellite", NULL,
     "redshift", NULL,
     "nm-applet", NULL,
     "blueman-applet", NULL,
-    "volctl", NULL,
     "st", NULL,
 	NULL /* terminate */
 };
 
 /* tagging */
-static const char *tags[]              = { "", "󰖟", "", "󰝚", "󰃣", "", "", /*"",*/ "" };
+static const char *tags[]              = { "", "󰖟", /*"",*/ "󰝚", "󰃣", "", "", /*"",*/ "" };
 static const int tagschemes[]          = { SchemeTag1, SchemeTag2, SchemeTag3,
                                            SchemeTag4, SchemeTag5, SchemeTag6,
                                            SchemeTag7, SchemeTag8, SchemeTag9 };
@@ -81,12 +80,12 @@ static const Rule rules[] = {
 	/* class           instance    title       tags mask     isfloating   monitor */
     { "Eog",           NULL,       NULL,       0,            1,           -1 },
     { "zen",           NULL,       NULL,       1 << 1,       0,           -1 },
-    { "discord",       NULL,       NULL,       1 << 2,       0,           -1 },
-    { "Spotify",       NULL,       NULL,       1 << 3,       0,           -1 },
-	{ "Gimp",          NULL,       NULL,       1 << 4,       0,           -1 },
-    { "Thunar",        NULL,       NULL,       1 << 5,       0,           -1 },
-    { "steam",         NULL,       NULL,       1 << 6,       0,           -1 },
-    { "SC Controller", NULL,       NULL,       1 << 8,       1,           -1 }
+    { "Spotify",       NULL,       NULL,       1 << 2,       0,           -1 },
+	{ "Gimp",          NULL,       NULL,       1 << 3,       0,           -1 },
+    { "Thunar",        NULL,       NULL,       1 << 4,       0,           -1 },
+    { "steam",         NULL,       NULL,       1 << 5,       0,           -1 }
+    // { "SC Controller", NULL,       NULL,       1 << 6,       1,           -1 },
+    // { "discord",       NULL,       NULL,       1 << 6,       0,           -1 }
 };
 
 /* layout(s) */
@@ -129,9 +128,7 @@ static const char *rofi[]          = { "launcher.sh", NULL };
 static const char *powermenu[]     = { "powermenu", NULL };
 static const char *bsethalf[]      = { "brightnessctl", "s", "50%" };
 static const char *bsetzero[]      = { "brightnessctl", "s", "0%" };
-static const char *screenshot[]    = { "gnome-screenshot", NULL };
 static const char *killmenu[]      = { "killmenu", NULL };
-static const char *wallpapermenu[] = { "wallpapermenu", "/home/smooll/wallpapers", NULL };
 static const char *qalc[]		   = { "dmenu_run", "-C", "-F", "-l", "1", NULL };
 
 static const Key keys[] = {
@@ -177,8 +174,8 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_s,      togglesticky,      {0} },
 	{ MODKEY|ShiftMask, 			XK_e, 	   spawn, 		      {.v = explorer } },
 	{ MODKEY, 						XK_F4, 	   spawn, 		      {.v = powermenu } },
-	{ MODKEY|ShiftMask, 			XK_s, 	   spawn, 		      {.v = screenshot } },
-    { MODKEY,                       XK_w,      spawn,             {.v = wallpapermenu} },
+	{ MODKEY|ShiftMask, 			XK_s, 	   spawn, 		      SHCMD("scrot -f $(xdg-user-dir PICTURES)/\"$(date +'%d-%m-%Y %H-%M-%S').png\"") },
+    { MODKEY,                       XK_w,      spawn,             SHCMD("wallpapermenu ${HOME}/wallpapers") },
 	TAGKEYS(                        XK_1,                         0)
 	TAGKEYS(                        XK_2,                         1)
 	TAGKEYS(                        XK_3,                         2)
