@@ -48,6 +48,7 @@ static const char *colors[][3]        = {
 static const char *autostart_lockfile = "/tmp/dwm-autostart.lock";
 static const char *const autostart[]  = {
     "dwmblocks", NULL,
+    "dba-volume-listener", NULL,
 	"lxsession", "-s", "/usr/share/xsessions/dwm.desktop", NULL,
     "systemctl", "--user", "import-environment", "DISPLAY", NULL,
     "udiskie", "-a", NULL,
