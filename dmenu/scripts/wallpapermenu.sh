@@ -29,6 +29,6 @@ else
 fi
 
 if [ -n "$(prettify -r "${response}")" ]; then
-	# Change "feh --bg-fill" if using a different wallpaper manager.
-    feh --bg-fill "${wallpapers[$(prettify -r "${response}")]}"
+	# Change "feh --bg-max" if using a different wallpaper manager.
+    feh --bg-max "${wallpapers[$(prettify -r "${response}")]}"
 fi
