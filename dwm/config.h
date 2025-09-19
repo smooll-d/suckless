@@ -49,11 +49,13 @@ static const char *autostart_lockfile = "/tmp/dwm-autostart.lock";
 static const char *const autostart[]  = {
     "dwmblocks", NULL,
     "dba-volume-listener", NULL,
+    "dba-volume-bluetooth-listener", NULL,
 	"lxsession", "-s", "/usr/share/xsessions/dwm.desktop", NULL,
     "systemctl", "--user", "import-environment", "DISPLAY", NULL,
     "udiskie", "-a", NULL,
     "/bin/sh", "-c", "${HOME}/.fehbg", NULL,
     "picom", NULL,
+    "easyeffects", "--gapplication-service", NULL,
     "parcellite", NULL,
     "redshift", NULL,
     "nm-applet", NULL,
@@ -83,8 +85,12 @@ static const Rule rules[] = {
     { "zen",           NULL,       NULL,       1 << 1,       0,           -1 },
     { "Spotify",       NULL,       NULL,       1 << 2,       0,           -1 },
 	{ "Gimp",          NULL,       NULL,       1 << 3,       0,           -1 },
+	{ "Aseprite",      NULL,       NULL,       1 << 3,       0,           -1 },
     { "Thunar",        NULL,       NULL,       1 << 4,       0,           -1 },
-    { "steam",         NULL,       NULL,       1 << 5,       0,           -1 }
+    { "steam",         NULL,       NULL,       1 << 5,       1,           -1 },
+    { "Lutris",        NULL,       NULL,       1 << 5,       0,           -1 },
+    { "qBittorrent",   NULL,       NULL,       1 << 6,       0,           -1 },
+    { "easyeffects",   NULL,       NULL,       1 << 6,       0,           -1 }
     // { "SC Controller", NULL,       NULL,       1 << 6,       1,           -1 },
     // { "discord",       NULL,       NULL,       1 << 6,       0,           -1 }
 };
@@ -175,7 +181,8 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_s,      togglesticky,      {0} },
 	{ MODKEY|ShiftMask, 			XK_e, 	   spawn, 		      {.v = explorer } },
 	{ MODKEY, 						XK_F4, 	   spawn, 		      {.v = powermenu } },
-	{ MODKEY|ShiftMask, 			XK_s, 	   spawn, 		      SHCMD("scrot -f $(xdg-user-dir PICTURES)/\"$(date +'%d-%m-%Y %H-%M-%S').png\"") },
+	{ MODKEY|ShiftMask, 			XK_s, 	   spawn, 		      SHCMD("scrot -F $(xdg-user-dir PICTURES)/\"$(date +'%d-%m-%Y_%H-%M-%S').png\"") },
+	{ MODKEY|ControlMask|ShiftMask, XK_s, 	   spawn, 		      SHCMD("scrot -s -F $(xdg-user-dir PICTURES)/\"$(date +'%d-%m-%Y_%H-%M-%S').png\"") },
     { MODKEY,                       XK_w,      spawn,             SHCMD("wallpapermenu ${HOME}/wallpapers") },
 	TAGKEYS(                        XK_1,                         0)
 	TAGKEYS(                        XK_2,                         1)
